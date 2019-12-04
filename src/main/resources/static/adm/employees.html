@@ -1,0 +1,757 @@
+<!doctype html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang=""> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8" lang=""> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9" lang=""> <![endif]-->
+<!--[if gt IE 8]><!--> 
+<html class="no-js" lang=""> <!--<![endif]-->
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Empleados</title>
+    <meta name="description" content="Sufee Admin - HTML5 Admin Template">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link rel="apple-touch-icon" href="../apple-icon.png">
+    <link rel="shortcut icon" href="../favicon.ico">
+
+    <link rel="stylesheet" href="../assets/css/normalize.css">
+    <link rel="stylesheet" href="../assets/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../assets/css/font-awesome.min.css">
+    <link rel="stylesheet" href="../assets/css/themify-icons.css">
+    <link rel="stylesheet" href="../assets/css/flag-icon.min.css">
+    <link rel="stylesheet" href="../assets/css/cs-skin-elastic.css">
+    <link rel="stylesheet" href="../assets/css/lib/datatable/dataTables.bootstrap.min.css">
+    <link rel="stylesheet" href="../assets/scss/style.css">
+    <link rel="stylesheet" href="../assets/css/lib/chosen/chosen.min.css">
+    <link rel="stylesheet" href="../assets/select2/css/select2.min.css">
+    <link rel="stylesheet" href="../assets/css/jAlert.css">
+    
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,600,700,800' rel='stylesheet' type='text/css'>
+    <!-- <script type="text/javascript" src="https://cdn.jsdelivr.net/html5shiv/3.7.3/html5shiv.min.js"></script> -->
+    
+    <style type="text/css">
+#contentDocEmployee{
+	width:100%;
+	height:250px;
+	
+	position:relative;
+	height:100%;
+}
+.w100{
+	width:100%;
+	position:relative;
+	height:1000px;
+	}
+    </style>
+</head>
+<body>
+	
+	<!-- Left Panel -->
+    <aside id="left-panel" class="left-panel"></aside>
+    <!-- Left Panel -->
+
+    <!-- Right Panel -->
+    <div id="right-panel" class="right-panel">
+
+        <!-- Header init-->
+        <header id="header" class="header"></header>
+        <!-- Header end -->
+        
+        <!-- .content init -->
+        <div class="content mt-3">
+        	<div class="card">
+        	<!-- ###### Messages for user, do not remove ###### -->
+	            <div class="card-header">
+					<h3 class="title-edit">Administrar - Empleados</h3>
+				</div>
+	            <div class="col-sm-12">
+	                <div class="alert alert-dismissible fade show" role="alert" style="display: none; margin-top: 10px" id="div-message">
+	                  <div id="message-content"></div>
+	                </div>
+	            </div>
+	            <!-- HTML BODY init -->
+	            
+				<div id="info-employee" class="animated fadeIn">
+					<div class="row form-group">
+						<div class="col-md-12">
+							<div class="card">
+								<div class="card-body">
+									<button id="btn-add-employee" type="button" class="btn btn-primary btn-sm">
+										<i class="fa fa-plus"></i> Agregar Empleado
+									</button>
+									<div id="seccion-table-employee" class="table-responsive"></div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<!-- .animated -->
+				<div id="add-employee" class="card" style="display:none;">
+					<div class="card-header">
+						<h4 id="add-mod-employee" class="title-edit"></h4>
+					</div>
+					<form id="form-add-employee" 
+						method="POST">
+						<!-- Menu -->
+						<ul class="nav nav-pills" id="myTab" role="tablist">
+							<li class="nav-item">
+	                            <a class="nav-link active" id="tab-person" data-toggle="tab" href="#content-person" role="tab" aria-controls="content-person" aria-selected="true">Personal</a>
+	                        </li>
+	                        <li class="nav-item">
+	                            <a class="nav-link" id="tab-home" data-toggle="tab" href="#content-home" role="tab" aria-controls="content-home" aria-selected="false">Domiciliares</a>
+	                        </li>
+	                        <li class="nav-item">
+	                            <a class="nav-link" id="tab-contact" data-toggle="tab" href="#content-contact" role="tab" aria-controls="content-contact" aria-selected="false">Contacto</a>
+	                        </li>
+	                        <li class="nav-item">
+	                            <a class="nav-link" id="tab-school" data-toggle="tab" href="#content-school" role="tab" aria-controls="content-school" aria-selected="false">Escolares</a>
+	                        </li>
+	                        <li class="nav-item">
+	                            <a class="nav-link" id="tab-load-one" data-toggle="tab" href="#content-load-one" role="tab" aria-controls="content-load-one" aria-selected="false">Carga 1</a>
+	                        </li>
+	                        <li class="nav-item">
+	                            <a class="nav-link" id="tab-load-two" data-toggle="tab" href="#content-load-two" role="tab" aria-controls="content-load-two" aria-selected="false">Carga 2</a>
+	                        </li>
+	                        <li class="nav-item">
+	                            <a class="nav-link" id="tab-load-three" data-toggle="tab" href="#content-load-three" role="tab" aria-controls="content-load-three" aria-selected="false">Carga 3</a>
+	                        </li>
+	                        <li class="nav-item">
+	                            <a class="nav-link" id="tab-session" data-toggle="tab" href="#content-session" role="tab" aria-controls="content-session" aria-selected="false">Sesión</a>
+	                        </li>
+	                    </ul>
+	                    <div class="tab-content pl-3 p-1" id="myTabContent">
+	                    	<div class="tab-pane fade show active" id="content-person" role="tabpanel" aria-labelledby="tab-person">
+	                            <h3>Datos personales</h3>
+	                            <div class="card-body">
+	                            	<div class="form-group">
+										<div class="input-group">
+											<div class="input-group-addon">
+												<i class="fa fa-user"></i>
+											</div>
+											<input type="text" id="cve_employee" name="cve_employee"
+												placeholder="Clave del empleado" class="form-control"
+												data-minlength="6"
+												required>
+										</div>
+										<div class="help-block with-errors" style="color:red"></div>
+									</div>
+									<div class="form-group">
+										<div class="input-group">
+											<div class="input-group-addon">
+												<i class="fa fa-user"></i>
+											</div>
+											<input type="text" id="first_name" name="first_name"
+												placeholder="Nombre" class="form-control"
+												required>
+										</div>
+										<div class="help-block with-errors" style="color:red"></div>
+									</div>
+									<div class="form-group">
+										<div class="input-group">
+											<div class="input-group-addon">
+												<i class="fa fa-user"></i>
+											</div>
+											<input type="text" id=father_last_name name="father_last_name"
+												placeholder="Apellido paterno" class="form-control"
+												required>
+										</div>
+										<div class="help-block with-errors" style="color:red"></div>
+									</div>
+									<div class="form-group">
+										<div class="input-group">
+											<div class="input-group-addon">
+												<i class="fa fa-user"></i>
+											</div>
+											<input type="text" id="mother_last_name" name="mother_last_name"
+												placeholder="Apellido materno" class="form-control"
+												required>
+										</div>
+										<div class="help-block with-errors" style="color:red"></div>
+									</div>
+									<div class="form-group">
+										<div class="input-group">
+											<div class="input-group-addon">
+												<i class="fa fa-user"></i>
+											</div>
+											<input type="text" id="birthdate" name="birthdate"
+												placeholder="Fecha de nacimiento Ejemplo: yyyy/MM/dd "
+												class="form-control">
+										</div>
+									</div>
+									<div class="card">
+										<select id="sex" data-placeholder="Seleccionar genero..."
+											class="selectBMC" tabindex="1">
+											<option value=""></option>
+											<option value="1">Femenino</option>
+											<option value="2">Masculino</option>
+										</select>
+									</div>
+									<div class="card">
+										<select id="civil_status" data-placeholder="Seleccionar estado civil..."
+											class="selectBMC" tabindex="1">
+											<option value=""></option>
+											<option value="1">Casado</option>
+											<option value="2">Soltero</option>
+											<option value="3">Otro</option>
+										</select>
+									</div>
+									<div class="form-group">
+										<div class="input-group">
+											<div class="input-group-addon">
+												<i class="fa fa-user"></i>
+											</div>
+											<input type="text" id="nationality" name="nationality"
+												placeholder="Nacionalidad" class="form-control">
+										</div>
+									</div>
+	                            </div>
+	                        </div>
+	                        <div class="tab-pane fade" id="content-home" role="tabpanel" aria-labelledby="tab-home">
+	                            <h3>Datos domiciliares</h3>
+	                            <div class="card-body">
+	                            	<div class="form-group">
+										<div class="input-group">
+											<div class="input-group-addon">
+												<i class="fa fa-user"></i>
+											</div>
+											<input type="text" id="imss" name="imss" placeholder="IMSS"
+												class="form-control">
+										</div>
+									</div>
+									<div class="card">
+										<select id="state" data-placeholder="Seleccionar estado..."
+											class="selectBMC" tabindex="1">
+											<option value=""></option>
+											<option value="1">Aguascalientes</option>
+											<option value="2">Baja California</option>
+											<option value="3">Baja California Sur</option>
+											<option value="4">Campeche</option>
+											<option value="5">Coahuila de Zaragoza</option>
+											<option value="6">Colima</option>
+											<option value="7">Chiapas</option>
+											<option value="8">Chihuahua</option>
+											<option value="9">Distrito Federal</option>
+											<option value="10">Durango</option>
+											<option value="11">Guanajuato</option>
+											<option value="12">Guerrero</option>
+											<option value="13">Hidalgo</option>
+											<option value="14">Jalisco</option>
+											<option value="15">México</option>
+											<option value="16">Michoacán de Ocampo</option>
+											<option value="17">Morelos</option>
+											<option value="18">Nayarit</option>
+											<option value="19">Nuevo León</option>
+											<option value="20">Oaxaca</option>
+											<option value="21">Puebla</option>
+											<option value="22">Querétaro</option>
+											<option value="23">Quintana Roo</option>
+											<option value="24">San Luis Potosí</option>
+											<option value="25">Sinaloa</option>
+											<option value="26">Sonora</option>
+											<option value="27">Tabasco</option>
+											<option value="28">Tamaulipas</option>
+											<option value="29">Tlaxcala</option>
+											<option value="30">Veracruz de Ignacio de la Llave</option>
+											<option value="31">Yucatán</option>
+											<option value="32">Zacatecas</option>
+										</select>
+									</div>
+									<div class="card">
+										<select id="delegation_municipality" data-placeholder="Seleccionar delegación/municipio..."
+											class="selectBMC" tabindex="1">
+											<option value=""></option>
+											<option value="1">Nezahualcóyotl</option>
+										</select>
+									</div>
+									<div class="card">
+										<select id="colony" data-placeholder="Seleccionar colonia..."
+											class="selectBMC" tabindex="1">
+											<option value=""></option>
+											<option value="1">Coyocan</option>
+										</select>
+									</div>
+									<div class="card">
+										<select id="postal_code" data-placeholder="Seleccionar codigo postal..."
+											class="selectBMC" tabindex="1">
+											<option value=""></option>
+											<option value="1">98765</option>
+										</select>
+									</div>
+									<div class="form-group">
+										<div class="input-group">
+											<div class="input-group-addon">
+												<i class="fa fa-user"></i>
+											</div>
+											<input type="text" id="street_number" name="street_number"
+												placeholder="Calle y número" class="form-control">
+										</div>
+									</div>
+	                            </div>
+	                        </div>
+	                        <div class="tab-pane fade" id="content-contact" role="tabpanel" aria-labelledby="tab-contact">
+	                            <h3>Datos de contacto</h3>
+	                            <div class="card-body">
+	                            	<div class="form-group">
+										<div class="input-group">
+											<div class="input-group-addon">
+												<i class="fa fa-user"></i>
+											</div>
+											<input type="text" id="military_primer" name="military_primer"
+												placeholder="Cartilla militar" class="form-control">
+										</div>
+									</div>
+									<div class="form-group">
+										<div class="input-group">
+											<div class="input-group-addon">
+												<i class="fa fa-user"></i>
+											</div>
+											<input type="text" id="phone" name="phone"
+												placeholder="Numero telefonico" class="form-control">
+										</div>
+									</div>
+									<div class="form-group">
+										<div class="input-group">
+											<div class="input-group-addon">
+												<i class="fa fa-user"></i>
+											</div>
+											<input type="text" id="cell_phone" name="cell_phone"
+												placeholder="Numero telefono celular" class="form-control">
+										</div>
+									</div>
+									<div class="form-group">
+										<div class="input-group">
+											<div class="input-group-addon">
+												<i class="fa fa-user"></i>
+											</div>
+											<input type="text" id="emergency_phone" name="emergency_phone"
+												placeholder="Numero telefonico emergencia"
+												class="form-control">
+										</div>
+									</div>
+									<div class="form-group">
+										<div class="input-group">
+											<div class="input-group-addon">
+												<i class="fa fa-user"></i>
+											</div>
+											<input type="text" id="rfc" name="rfc" placeholder="RFC"
+												class="form-control">
+										</div>
+									</div>
+									<div class="form-group">
+										<div class="input-group">
+											<div class="input-group-addon">
+												<i class="fa fa-user"></i>
+											</div>
+											<input type="text" id="curp" name="curp" placeholder="CURP"
+												class="form-control">
+										</div>
+									</div>
+	                            </div>
+	                        </div>
+	                        <div class="tab-pane fade" id="content-school" role="tabpanel" aria-labelledby="tab-school">
+	                            <h3>Datos escolares</h3>
+	                            <div class="card-body">
+	                            	<div class="card">
+										<select id="institute" data-placeholder="Seleccionar instituto..."
+											class="selectBMC" tabindex="1">
+											<option value=""></option>
+											<option value="1">Universidad Tenologica de Nezahualcóyotl</option>
+											<option value="2">Universidad Autonoma del Estado de México</option>
+											<option value="3">Universidad Nacional Autonoma de México</option>
+											<option value="4">Universadad Anáhuac del Sur</option>
+											<option value="5">Instituto Tecnológico y de Estudios Superiores de Monterrey</option>
+											<option value="6">Instituto Tecnológico Autónomo de México</option>
+											<option value="7">Instituto Politécnico Nacional</option>
+											<option value="8">Instituto Tecnológico de Orizaba</option>
+											<option value="9">Instituto Tecnológico de Tláhuac</option>
+										</select>
+									</div>
+									<div class="card">
+										<select id="educational_level" data-placeholder="Seleccionar nivel de estudios..."
+											class="selectBMC" tabindex="1">
+											<option value=""></option>
+											<option value="1">Primaria</option>
+											<option value="2">Secundaria</option>
+											<option value="3">Preparatoria</option>
+											<option value="4">Licenciatura/Ingenieria</option>
+											<option value="5">Maestria</option>
+											<option value="6">Doctorado</option>
+										</select>
+									</div>
+									<div class="form-group">
+										<div class="col col-md-3">
+											<label class="form-control-label">Título</label>
+										</div>
+										<div class="col col-md-9">
+											<div class="form-check">
+												<div class="radio">
+													<label for="radio1" class="form-check-label "> <input
+														type="radio" id="status_title_r1" name="status_title_r1" value="1"
+														class="form-check-input">Obtenido
+													</label>
+												</div>
+												<div class="radio">
+													<label for="radio2" class="form-check-label "> <input
+														type="radio" id="status_title_r2" name="status_title_r2" value="2"
+														class="form-check-input">En tramite
+													</label>
+												</div>
+												<div class="radio">
+													<label for="radio3" class="form-check-label "> <input
+														type="radio" id="status_title_r3" name="status_title_r3" value="3"
+														class="form-check-input">No obtenido
+													</label>
+												</div>
+											</div>
+										</div>
+									</div>
+	                            </div>
+	                        </div>
+	                        <div class="tab-pane fade" id="content-load-one" role="tabpanel" aria-labelledby="tab-load-one">
+	                            <h3>Carga de archivos 1</h3>
+	                            <div class="card-body">
+	                            	<div class="row form-group">
+										<div class="col col-md-3">
+											<label for="file-input-com-estudios" class="form-control-label">Cargar comprobante de estudios.</label>
+										</div>
+										<div class="col-12 col-md-9">
+											<input type="file" id="name_proof_studies" name="name_proof_studies" onchange="setValueFile('name_proof_studies')"
+												class="form-control-file">
+										</div>
+									</div>
+									<div class="row form-group">
+										<div class="col col-md-3">
+											<label for="file-input-acta-nacimiento" class="form-control-label">Cargar acta de nacimiento.</label>
+										</div>
+										<div class="col-12 col-md-9">
+											<input type="file" id="name_birth_certificate" name="name_birth_certificate" onchange="setValueFile('name_birth_certificate')"
+												class="form-control-file">
+										</div>
+									</div>
+									<div class="row form-group">
+										<div class="col col-md-3">
+											<label for="file-multiple-input-titulo-cedula" class="form-control-label">Cargar Titulo y Cédula.</label>
+										</div>
+										<div class="col-12 col-md-9">
+											<input type="file" id="name_title_profecional_cedula" name="name_title_profecional_cedula" multiple="" onchange="setValueFile('name_title_profecional_cedula')"
+												class="form-control-file">
+										</div>
+									</div>
+									<div class="row form-group">
+										<div class="col col-md-3">
+											<label for="file-input-curp" class="form-control-label">CURP.</label>
+										</div>
+										<div class="col-12 col-md-9">
+											<input type="file" id="name_curp" name="name_curp" onchange="setValueFile('name_curp')"
+												class="form-control-file">
+										</div>
+									</div>
+									<div class="row form-group">
+										<div class="col col-md-3">
+											<label for="file-input-imss" class="form-control-label">IMSS.</label>
+										</div>
+										<div class="col-12 col-md-9">
+											<input type="file" id="name_imss" name="name_imss" onchange="setValueFile('name_imss')"
+												class="form-control-file">
+										</div>
+									</div>
+									<div class="row form-group">
+										<div class="col col-md-3">
+											<label for="file-input-infonavit" class="form-control-label">Infonavit.</label>
+										</div>
+										<div class="col-12 col-md-9">
+											<input type="file" id="name_infonavit" name="name_infonavit" onchange="setValueFile('name_infonavit')"
+												class="form-control-file">
+										</div>
+									</div>
+									<div class="row form-group">
+										<div class="col col-md-3">
+											<label for="file-multiple-input-identificacion" class="form-control-label">Identificación.</label>
+										</div>
+										<div class="col-12 col-md-9">
+											<input type="file" id="name_identification" name="name_identification" multiple="" onchange="setValueFile('name_identification')"
+												class="form-control-file">
+										</div>
+									</div>
+									<div class="row form-group">
+										<div class="col col-md-3">
+											<label for="file-multiple-input-pasaporte" class="form-control-label">Cargar Pasaporte y Visa.</label>
+										</div>
+										<div class="col-12 col-md-9">
+											<input type="file" id="name_passport_visa" name="name_passport_visa" multiple="" onchange="setValueFile('name_passport_visa')"
+												class="form-control-file">
+										</div>
+									</div>
+									<div class="row form-group">
+										<div class="col col-md-3">
+											<label for="file-input-no-penales" class="form-control-label">Cargar antecedentes no penales.</label>
+										</div>
+										<div class="col-12 col-md-9">
+											<input type="file" id="name_noncriminal_background" name="name_noncriminal_background" onchange="setValueFile('name_noncriminal_background')"
+												class="form-control-file">
+										</div>
+									</div>
+									<div class="row form-group">
+										<div class="col col-md-3">
+											<label for="file-input-com-domicilio" class="form-control-label">Cargar comprobante de domicilio.</label>
+										</div>
+										<div class="col-12 col-md-9">
+											<input type="file" id="name_proof_address" name="name_proof_address" onchange="setValueFile('name_proof_address')"
+												class="form-control-file">
+										</div>
+									</div>
+	                            </div>
+	                        </div>
+	                        <div class="tab-pane fade" id="content-load-two" role="tabpanel" aria-labelledby="tab-load-two">
+	                            <h3>Carga de archivos 2</h3>
+	                            <div class="card-body">
+	                            	<div class="row form-group">
+										<div class="col col-md-3">
+											<label for="file-multiple-input-referencias" class="form-control-label">Cargar referencias.</label>
+										</div>
+										<div class="col-12 col-md-9">
+											<input type="file" id="name_personal_references" name="name_personal_references" multiple="" onchange="setValueFile('name_personal_references')"
+												class="form-control-file">
+										</div>
+									</div>
+									<div class="row form-group">
+										<div class="col col-md-3">
+											<label for="file-input-cv" class="form-control-label">Cargar CV.</label>
+										</div>
+										<div class="col-12 col-md-9">
+											<input type="file" id="name_professional_cv" name="name_professional_cv" onchange="setValueFile('name_professional_cv')"
+												class="form-control-file">
+										</div>
+									</div>
+									<div class="row form-group">
+										<div class="col col-md-3">
+											<label for="file-multiple-input-pruebas-psico" class="form-control-label">Cargar pruebas psicometricas.</label>
+										</div>
+										<div class="col-12 col-md-9">
+											<input type="file" id="name_psychometric_tests" name="name_psychometric_tests" multiple="" onchange="setValueFile('name_psychometric_tests')"
+												class="form-control-file">
+										</div>
+									</div>
+									<div class="row form-group">
+										<div class="col col-md-3">
+											<label for="file-input-foto" class="form-control-label">Cargar Foto.</label>
+										</div>
+										<div class="col-12 col-md-9">
+											<input type="file" id="name_photo" name="name_photo" onchange="setValueFile('name_photo')"
+												class="form-control-file">
+										</div>
+									</div>
+	                            </div>
+	                        </div>
+	                        <div class="tab-pane fade" id="content-load-three" role="tabpanel" aria-labelledby="tab-load-three">
+	                            <h3>Carga de archivos 3 - Experiencia con certificado</h3>
+	                            <div class="card-body">
+
+									<table class="table">
+										<thead>
+											<tr>
+												<th scope="col">#</th>
+												<th scope="col">Certificado</th>
+												<th scope="col">Fecha inicio</th>
+												<th scope="col">Fecha Fin</th>
+											</tr>
+										</thead>
+										<tbody>
+											<tr>
+												<th scope="row">1</th>
+												<td>Python</td>
+												<td>2009/12/12</td>
+												<td>2020/12/12</td>
+											</tr>
+											<tr>
+												<th scope="row">2</th>
+												<td>C++</td>
+												<td>2011/11/12</td>
+												<td>2021/11/12</td>
+											</tr>
+											<tr>
+												<th scope="row">3</th>
+												<td>Java</td>
+												<td>2017/05/21</td>
+												<td>2019/05/21</td>
+											</tr>
+											<tr>
+												<th align="center"><i class="fa fa-plus btn btn-success" 
+												onclick="#"	style='cursor: pointer'></i></th>
+												<td></td>
+												<td></td>
+												<td></td>
+											</tr>
+										</tbody>
+									</table>
+
+								</div>
+	                        </div>
+	                        <div class="tab-pane fade" id="content-session" role="tabpanel" aria-labelledby="tab-session">
+	                            <h3>Datos de sesión</h3>
+	                            <div class="card-body">
+	                            	<div class="card">
+										<select id="area" data-placeholder="Seleccionar área..."
+											class="selectBMC" tabindex="1"
+											required
+											>
+											<option value=""></option>
+											<option value="1">Desarrollo</option>
+											<option value="2">Mesa de Servicio</option>
+										</select>
+										<div id="error-area" class="help-block with-errors" style="color:red;display:none;">Área requerida</div>
+									</div>
+									<div class="card">
+										<select id="market_stall" data-placeholder="Seleccionar puesto..."
+											class="selectBMC" tabindex="1">
+											<option value=""></option>
+											<option value="1">JAVA Sr</option>
+											<option value="2">JAVA Jr</option>
+										</select>
+									</div>
+									<div class="card">
+										<select id="boss" data-placeholder="Seleccionar jefe inmediato..."
+											class="selectBMC" tabindex="1">
+											<option value=""></option>
+											<option value="1">Raul Nava Hernández</option>
+											<option value="2">David Alejandro Moguel</option>
+										</select>
+									</div>
+									<div class="form-group">
+										<div class="input-group">
+											<div class="input-group-addon">
+												<i class="fa fa-money"></i>
+											</div>
+											<input type="number" id="salary" name="salary"
+												placeholder="Salario" class="form-control">
+										</div>
+									</div>
+									<div class="form-group">
+										<div class="input-group">
+											<div class="input-group-addon">
+												<i class="fa fa-envelope"></i>
+											</div>
+											<input type="email" id="email" name="email"
+												placeholder="Email" class="form-control"
+												required>
+										</div>
+										<div class="help-block with-errors" style="color:red"></div>
+									</div>
+									<div class="form-group">
+										<div class="input-group">
+											<div class="input-group-addon">
+												<i class="fa fa-asterisk"></i>
+											</div>
+											<input type="password" id="password" name="password"
+												placeholder="Password" class="form-control"
+												data-minlength="5"
+												required>
+										</div>
+										<div class="help-block with-errors" style="color:red"></div>
+									</div>
+	                            </div>
+	                        </div>
+	                    </div>
+                    </form>
+				</div>
+				
+				<!-- Accion -->
+				<div class="form-group">
+					<button id="btn-cancel-employee" type="button" class="btn btn-danger btn-sm" style="display:none;">
+						<i class="fa fa-close"></i> Cancelar
+					</button>
+					<button id="btn-save-employee" type="button" class="btn btn-primary btn-sm" style="display:none;">
+						<i class="fa fa-plus"></i> Guardar
+					</button>
+				</div>
+				
+				<div id="view-employee" class="card" style="display:none;">
+					<div class="card-header">
+						<h4 class="title-edit">Ver documentación</h4>
+					</div>
+					<div class="card-body">
+						<div class="col col-md-6">
+							<strong><label class="form-control-label">Nombre: </label></strong>
+							<label id="vName" class="form-control-label"></label>
+						</div>
+						<div class="col col-md-6">	
+							<strong><label class="form-control-label">Area: </label></strong>
+							<label id="vArea" class="form-control-label"></label>
+						</div>
+						<div class="col col-md-6">
+							<strong><label class="form-control-label">Clave: </label></strong>
+							<label id="vCve" class="form-control-label"></label>
+						</div>
+						<div class="col col-md-6">
+							<strong><label class="form-control-label">Puesto: </label></strong>
+							<label id="vJobPlace" class="form-control-label"></label>
+						</div>
+					</div>
+					<!-- View Document -->
+					<div class="card-body">
+						<div class="col col-md-4">
+							<table id="theader_document" class="table table-hover">
+								<thead>
+									<tr>
+										<th>Acción</th>
+										<th>Tipo documento</th>
+									</tr>
+								</thead>
+								<tbody id="tbody_document"></tbody>
+							</table>
+						</div>
+						<!-- Content -->
+						<div class="card-body float-right">
+							<h3 id="lTypeDocument" class="title-edit"></h3>
+						</div>
+						<div id="contentDocEmployee" class="col col-md-8"></div>
+					</div>
+				</div>
+				
+				<!-- Accion -->
+				<div class="form-group">
+					<button id="btn-cancel-view-employee" type="button" class="btn btn-danger btn-sm" style="display:none;">
+						<i class="fa fa-close"></i> Cancelar
+					</button>
+				</div>
+				
+				<!-- HTML BODY end -->
+            </div>
+        </div> 
+        <!-- .content end -->
+        
+    </div><!-- /#right-panel -->
+
+    <!-- Right Panel -->
+
+    <script src="../assets/js/vendor/jquery-2.1.4.min.js"></script>
+    <script src="../assets/plugins/jquery/jquery.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js"></script>
+    <script src="../assets/js/plugins.js"></script>
+    <script src="../assets/js/main.js"></script>
+    
+    <script src="../assets/js/lib/data-table/datatables.gral.js"></script>
+    <script src="../assets/js/lib/data-table/dataTables.bootstrap.min.js"></script>
+    <script src="../assets/js/lib/data-table/dataTables.buttons.min.js"></script>
+    <script src="../assets/js/lib/data-table/buttons.bootstrap.min.js"></script>
+    <script src="../assets/js/lib/data-table/jszip.min.js"></script>
+    <script src="../assets/js/lib/data-table/pdfmake.min.js"></script>
+    <script src="../assets/js/lib/data-table/vfs_fonts.js"></script>
+    <script src="../assets/js/lib/data-table/buttons.html5.min.js"></script>
+    <script src="../assets/js/lib/data-table/buttons.print.min.js"></script>
+    <script src="../assets/js/lib/data-table/buttons.colVis.min.js"></script>
+    <script src="../assets/js/lib/data-table/datatables-init.js"></script>
+    <script src="../assets/js/lib/chosen/chosen.jquery.min.js"></script>
+    <script src="../assets/select2/js/select2.full.min.js"></script>
+    <script src="../assets/js/jAlert/jAlert.min.js"></script>
+	<script src="../assets/js/jAlert/jAlert-functions.min.js"></script>
+	<script src="../assets/bootstrap-validator-master/js/validator.js"></script>
+    
+    <!-- Controllers -->
+    <script src="../assets/js/utils/models.js"></script>
+    <script src="../assets/js/adm/employees.js"></script>
+    <script src="../assets/js/utils/commons.js"></script>
+    <script src="../assets/js/utils/mime.js"></script>
+</body>
+</html>
+<!-- @brian -->

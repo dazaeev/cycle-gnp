@@ -1,0 +1,162 @@
+<!doctype html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang=""> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8" lang=""> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9" lang=""> <![endif]-->
+<!--[if gt IE 8]><!--> 
+<html class="no-js" lang=""> <!--<![endif]-->
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Consulta de incidencias</title>
+    <meta name="description" content="Sufee Admin - HTML5 Admin Template">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link rel="apple-touch-icon" href="../apple-icon.png">
+    <link rel="shortcut icon" href="../favicon.ico">
+
+    <link rel="stylesheet" href="../assets/css/normalize.css">
+    <link rel="stylesheet" href="../assets/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../assets/css/font-awesome.min.css">
+    <link rel="stylesheet" href="../assets/css/themify-icons.css">
+    <link rel="stylesheet" href="../assets/css/flag-icon.min.css">
+    <link rel="stylesheet" href="../assets/css/cs-skin-elastic.css">
+    <link rel="stylesheet" href="../assets/css/lib/datatable/dataTables.bootstrap.min.css">
+    <link rel="stylesheet" href="../assets/scss/style.css">
+    <link rel="stylesheet" href="../assets/css/lib/chosen/chosen.min.css">
+    <link rel="stylesheet" href="../assets/css/jquery.datepicker.css">
+    
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,600,700,800' rel='stylesheet' type='text/css'>
+    <!-- <script type="text/javascript" src="https://cdn.jsdelivr.net/html5shiv/3.7.3/html5shiv.min.js"></script> -->
+</head>
+<body>
+	
+	<!-- Left Panel -->
+    <aside id="left-panel" class="left-panel"></aside>
+    <!-- Left Panel -->
+
+    <!-- Right Panel -->
+    <div id="right-panel" class="right-panel">
+
+        <!-- Header init-->
+        <header id="header" class="header"></header>
+        <!-- Header end -->
+        
+        <!-- .content init -->
+        <div class="content mt-3">
+        	<div class="card">
+        	<!-- ###### Messages for user, do not remove ###### -->
+	            <div class="card-header">
+					<h3 class="title-edit">Consulta de incidencias</h3>
+				</div>
+	            <div class="col-sm-12">
+	                <div class="alert alert-dismissible fade show" role="alert" style="display: none; margin-top: 10px" id="div-message">
+	                  <div id="message-content"></div>
+	                </div>
+	            </div>
+	            <!-- HTML BODY init -->
+
+				<div class="animated fadeIn">
+
+
+					<div class="row">
+						<div class="col-lg-12">
+							<div class="card">
+								<div class="card-body">
+									<h4 class="mb-3">Consulta mensual</h4>
+									<input type="text" name="date" id="date" data-select="datepicker">
+									<span class="input-group-btn"><button type="button" class="btn btn-primary" data-toggle="datepicker"><i class="fa fa-calendar"></i></button></span>
+									<div class="flot-container">
+										<div id="flot-pie" class="flot-pie-container"></div>
+									</div>
+								</div>
+							</div>
+							<!-- /# card -->
+						</div>
+						<!-- /# column -->
+					</div>
+					<!-- /# row -->
+
+
+					<div class="row">
+						<div class="col-lg-6">
+							<div class="card">
+								<div class="card-body">
+									<h4 class="mb-3">Consulta de empleado</h4>
+									<select data-placeholder="Escoje una opción..." class="selectAreaEmpleado" tabindex="1">
+                                       <option value="0" style="background-color:#DBD2D0">Escoje un área...</option>
+                                       <option value="1">Desarrollo</option>
+                                       <option value="2">Recursos Humanos</option>
+                                       <option value="3">Mercadotecnia</option>
+                                       <option value="4">Mesa de Servicio</option>
+                                       <option value="5">Seguridad</option>
+                                    </select>
+									<select data-placeholder="Escoje una opción..." class="selectEmpleado" tabindex="1">
+                                       <option value="0" style="background-color:#DBD2D0">Escoje un empleado...</option>
+                                       <option value="1">Brian</option>
+                                       <option value="2">Bruno</option>
+                                       <option value="3">Luis</option>
+                                       <option value="4">Nazario</option>
+                                       <option value="5">Raúl</option>
+                                    </select>
+									<div class="flot-container">
+										<div id="flot-pie2" class="flot-pie-container"></div>
+									</div>
+								</div>
+							</div>
+							<!-- /# card -->
+						</div>
+						<!-- /# column -->
+				
+						<div class="col-lg-6">
+							<div class="card">
+								<div class="card-body">
+									<h4 class="mb-3">Porcentaje de tipos de incidencias hasta hoy</h4>
+									<div class="flot-container">
+										<div id="flot-pie3" class="flot-pie-container"></div>
+									</div>
+								</div>
+							</div>
+							<!-- /# card -->
+						</div>
+						<!-- /# column -->
+					</div>
+					<!-- /# row -->
+
+				</div><!-- .animated -->
+				
+				<!-- HTML BODY end -->
+			</div>
+        </div> 
+        <!-- .content end -->
+        
+    </div><!-- /#right-panel -->
+
+    <!-- Right Panel -->
+
+    <script src="../assets/js/vendor/jquery-2.1.4.min.js"></script>
+    <script src="../assets/plugins/jquery/jquery.js"></script>
+    <script src="../assets/js/popper.min.js"></script>
+    <script src="../assets/js/plugins.js"></script>
+    <script src="../assets/js/main.js"></script>
+
+	<!--  flot-chart js -->
+	<script src="../assets/js/lib/flot-chart/excanvas.min.js"></script>
+	<script src="../assets/js/lib/flot-chart/jquery.flot.js"></script>
+	<script src="../assets/js/lib/flot-chart/jquery.flot.pie.js"></script>
+	<script src="../assets/js/lib/flot-chart/jquery.flot.time.js"></script>
+	<script src="../assets/js/lib/flot-chart/jquery.flot.stack.js"></script>
+	<script src="../assets/js/lib/flot-chart/jquery.flot.resize.js"></script>
+	<script src="../assets/js/lib/flot-chart/jquery.flot.crosshair.js"></script>
+	<script src="../assets/js/lib/flot-chart/curvedLines.js"></script>
+	<script src="../assets/js/lib/flot-chart/flot-tooltip/jquery.flot.tooltip.min.js"></script>
+	<script src="../assets/js/utils/jquery.datepicker.js"></script>
+	<!-- <script src="../assets/js/lib/flot-chart/flot-chart-init.js"></script> -->
+	<!--  /flot-chart js -->
+
+	<!-- Controllers -->
+    <script src="../assets/js/utils/models.js"></script>
+    <script src="../assets/js/view/query-review.js"></script>
+    <script src="../assets/js/utils/commons.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,27 @@
+.cron-select-period {
+    padding: 5px 5px 0px 5px;
+}
+
+.cron-input {
+    padding: 5px 5px 0px 5px;
+}
+
+.cron-select-period select,
+.cron-input select,
+.cron-input input[type=radio], 
+.cron-input input[type=checkbox] {
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+.select-css {
+	background: transparent;
+	border: none;
+	border-bottom: 2px solid #E0F2F7;
+	box-shadow: none;
+	border-radius: 0;
+    border-collapse: inherit;
+}
+select:focus {
+	outline: none;
+}

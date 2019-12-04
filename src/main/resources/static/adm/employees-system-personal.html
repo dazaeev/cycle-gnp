@@ -1,0 +1,359 @@
+<!doctype html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang=""> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8" lang=""> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9" lang=""> <![endif]-->
+<!--[if gt IE 8]><!--> 
+<html class="no-js" lang=""> <!--<![endif]-->
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Empleados</title>
+    <meta name="description" content="Sufee Admin - HTML5 Admin Template">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link rel="apple-touch-icon" href="../apple-icon.png">
+    <link rel="shortcut icon" href="../favicon.ico">
+
+    <link rel="stylesheet" href="../assets/css/normalize.css">
+    <link rel="stylesheet" href="../assets/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../assets/css/font-awesome.min.css">
+    <link rel="stylesheet" href="../assets/css/themify-icons.css">
+    <link rel="stylesheet" href="../assets/css/flag-icon.min.css">
+    <link rel="stylesheet" href="../assets/css/cs-skin-elastic.css">
+    <link rel="stylesheet" href="../assets/css/lib/datatable/dataTables.bootstrap.min.css">
+    <link rel="stylesheet" href="../assets/scss/style.css">
+    <link rel="stylesheet" href="../assets/css/lib/chosen/chosen.min.css">
+    <link rel="stylesheet" href="../assets/select2/css/select2.min.css">
+    <link rel="stylesheet" href="../assets/css/jAlert.css">
+    
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,600,700,800' rel='stylesheet' type='text/css'>
+    <!-- <script type="text/javascript" src="https://cdn.jsdelivr.net/html5shiv/3.7.3/html5shiv.min.js"></script> -->
+    <style type="text/css">
+    div.dataTables_filter { float: left; font-size: 14px; color: #00999d; }
+	div.dataTables_paginate { float: left; font-size: 12px; }
+    th { font-size: 13px; color: #00999d; text-align: center; }
+	td { font-size: 10px; text-align: center; }
+	#contentDocEmployee{
+		width:100%;
+		height:250px;
+		position:relative;
+		height:100%;
+	}
+	.w100{
+		width:100%;
+		position:relative;
+		height:1000px;
+	}
+	</style>
+</head>
+<body>
+	
+	<!-- Left Panel -->
+    <aside id="left-panel" class="left-panel"></aside>
+    <!-- Left Panel -->
+
+    <!-- Right Panel -->
+    <div id="right-panel" class="right-panel">
+
+        <!-- Header init-->
+        <header id="header" class="header"></header>
+        <!-- Header end -->
+        
+        <!-- .content init -->
+        <div class="content mt-3">
+        	<div class="card">
+        	<!-- ###### Messages for user, do not remove ###### -->
+	            <div class="card-header">
+					<h3 class="title-edit" style="color: #00999d;">Archivos Personales</h3>
+				</div>
+	            <div class="col-sm-12">
+	                <div class="alert alert-dismissible fade show" role="alert" style="display: none; margin-top: 10px" id="div-message">
+	                  <div id="message-content"></div>
+	                </div>
+	            </div>
+	            <!-- HTML BODY init -->
+				<div id="info-employee" class="animated fadeIn">
+					<div class="row form-group">
+						<div class="col-md-12">
+							<div class="card">
+								<div class="card-body">
+									<div id="seccion-table-employee" class="table-responsive"></div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<!-- .animated -->
+				<div id="add-employee" class="card" style="display:none;">
+					<div class="card-header">
+						<h4 id="add-mod-employee" class="title-edit"></h4>
+					</div>
+					<form id="form-add-employee" method="POST">
+						<div class="card-body">
+							<div class="row form-group">
+								<div class="col-12 col-md-4 text-center">
+									<label for="proofStudies" class="form-control-label">Comprobante de estudios:</label>
+								</div>
+								<div class="col-12 col-md-4 text-center">
+									<input type="file" id="proofStudies" name="proofStudies" onchange="setValueFile('proofStudies')"
+										class="form-control-file">
+								</div>
+								<div class="col-12 col-md-4">
+									<button id="btn-view-proofStudies" type="button" class="btn btn-info btn-sm" style="display:none;">
+										<i class="fa fa-download" title="Descargar documento"></i>
+									</button>
+								</div>
+							</div>
+							<div class="row form-group">
+								<div class="col-12 col-md-4 text-center">
+									<label for="birthCertificate" class="form-control-label">Acta de nacimiento:</label>
+								</div>
+								<div class="col-12 col-md-4 text-center">
+									<input type="file" id="birthCertificate" name="birthCertificate" onchange="setValueFile('birthCertificate')"
+										class="form-control-file">
+								</div>
+								<div class="col-12 col-md-4">
+									<button id="btn-view-birthCertificate" type="button" class="btn btn-info btn-sm" style="display:none;">
+										<i class="fa fa-download" title="Descargar documento"></i>
+									</button>
+								</div>
+							</div>
+							<div class="row form-group">
+								<div class="col-12 col-md-4 text-center">
+									<label for="titleProfessionalLicense" class="form-control-label">Tìtulo y cedula profesional:</label>
+								</div>
+								<div class="col-12 col-md-4 text-center">
+									<input type="file" id="titleProfessionalLicense" name="titleProfessionalLicense" onchange="setValueFile('titleProfessionalLicense')"
+										class="form-control-file">
+								</div>
+								<div class="col-12 col-md-4">
+									<button id="btn-view-titleProfessionalLicense" type="button" class="btn btn-info btn-sm" style="display:none;">
+										<i class="fa fa-download" title="Descargar documento"></i>
+									</button>
+								</div>
+							</div>
+							<div class="row form-group">
+								<div class="col-12 col-md-4 text-center">
+									<label for="curp" class="form-control-label">Curp:</label>
+								</div>
+								<div class="col-12 col-md-4 text-center">
+									<input type="file" id="curp" name="curp" onchange="setValueFile('curp')"
+										class="form-control-file">
+								</div>
+								<div class="col-12 col-md-4">
+									<button id="btn-view-curp" type="button" class="btn btn-info btn-sm" style="display:none;">
+										<i class="fa fa-download" title="Descargar documento"></i>
+									</button>
+								</div>
+							</div>
+							<div class="row form-group">
+								<div class="col-12 col-md-4 text-center">
+									<label for="imss" class="form-control-label">Imss:</label>
+								</div>
+								<div class="col-12 col-md-4 text-center">
+									<input type="file" id="imss" name="imss" onchange="setValueFile('imss')"
+										class="form-control-file">
+								</div>
+								<div class="col-12 col-md-4">
+									<button id="btn-view-imss" type="button" class="btn btn-info btn-sm" style="display:none;">
+										<i class="fa fa-download" title="Descargar documento"></i>
+									</button>
+								</div>
+							</div>
+							<div class="row form-group">
+								<div class="col-12 col-md-4 text-center">
+									<label for=infonavit class="form-control-label">Infonavit:</label>
+								</div>
+								<div class="col-12 col-md-4 text-center">
+									<input type="file" id="infonavit" name="infonavit" onchange="setValueFile('infonavit')"
+										class="form-control-file">
+								</div>
+								<div class="col-12 col-md-4">
+									<button id="btn-view-infonavit" type="button" class="btn btn-info btn-sm" style="display:none;">
+										<i class="fa fa-download" title="Descargar documento"></i>
+									</button>
+								</div>
+							</div>
+							<div class="row form-group">
+								<div class="col-12 col-md-4 text-center">
+									<label for=officialIdentification class="form-control-label">Identificación:</label>
+								</div>
+								<div class="col-12 col-md-4 text-center">
+									<input type="file" id="officialIdentification" name="officialIdentification" onchange="setValueFile('officialIdentification')"
+										class="form-control-file">
+								</div>
+								<div class="col-12 col-md-4">
+									<button id="btn-view-officialIdentification" type="button" class="btn btn-info btn-sm" style="display:none;">
+										<i class="fa fa-download" title="Descargar documento"></i>
+									</button>
+								</div>
+							</div>
+							<div class="row form-group">
+								<div class="col-12 col-md-4 text-center">
+									<label for=passportVisa class="form-control-label">Pasaporte/Visa:</label>
+								</div>
+								<div class="col-12 col-md-4 text-center">
+									<input type="file" id="passportVisa" name="passportVisa" onchange="setValueFile('passportVisa')"
+										class="form-control-file">
+								</div>
+								<div class="col-12 col-md-4">
+									<button id="btn-view-passportVisa" type="button" class="btn btn-info btn-sm" style="display:none;">
+										<i class="fa fa-download" title="Descargar documento"></i>
+									</button>
+								</div>
+							</div>
+							<div class="row form-group">
+								<div class="col-12 col-md-4 text-center">
+									<label for=noCriminalRecord class="form-control-label">Antecedentes No Penales:</label>
+								</div>
+								<div class="col-12 col-md-4 text-center">
+									<input type="file" id="noCriminalRecord" name="noCriminalRecord" onchange="setValueFile('noCriminalRecord')"
+										class="form-control-file">
+								</div>
+								<div class="col-12 col-md-4">
+									<button id="btn-view-noCriminalRecord" type="button" class="btn btn-info btn-sm" style="display:none;">
+										<i class="fa fa-download" title="Descargar documento"></i>
+									</button>
+								</div>
+							</div>
+							<div class="row form-group">
+								<div class="col-12 col-md-4 text-center">
+									<label for=proofAddress class="form-control-label">Comprobante Domicilio:</label>
+								</div>
+								<div class="col-12 col-md-4 text-center">
+									<input type="file" id="proofAddress" name="proofAddress" onchange="setValueFile('proofAddress')"
+										class="form-control-file">
+								</div>
+								<div class="col-12 col-md-4">
+									<button id="btn-view-proofAddress" type="button" class="btn btn-info btn-sm" style="display:none;">
+										<i class="fa fa-download" title="Descargar documento"></i>
+									</button>
+								</div>
+							</div>
+							<div class="row form-group">
+								<div class="col-12 col-md-4 text-center">
+									<label for=personalReferences class="form-control-label">Referencias personales:</label>
+								</div>
+								<div class="col-12 col-md-4 text-center">
+									<input type="file" id="personalReferences" name="personalReferences" onchange="setValueFile('personalReferences')"
+										class="form-control-file">
+								</div>
+								<div class="col-12 col-md-4">
+									<button id="btn-view-personalReferences" type="button" class="btn btn-info btn-sm" style="display:none;">
+										<i class="fa fa-download" title="Descargar documento"></i>
+									</button>
+								</div>
+							</div>
+							<div class="row form-group">
+								<div class="col-12 col-md-4 text-center">
+									<label for=professionalCurriculum class="form-control-label">Curriculum Profesional:</label>
+								</div>
+								<div class="col-12 col-md-4 text-center">
+									<input type="file" id="professionalCurriculum" name="professionalCurriculum" onchange="setValueFile('professionalCurriculum')"
+										class="form-control-file">
+								</div>
+								<div class="col-12 col-md-4">
+									<button id="btn-view-professionalCurriculum" type="button" class="btn btn-info btn-sm" style="display:none;">
+										<i class="fa fa-download" title="Descargar documento"></i>
+									</button>
+								</div>
+							</div>
+							<div class="row form-group">
+								<div class="col-12 col-md-4 text-center">
+									<label for=photo class="form-control-label">Foto:</label>
+								</div>
+								<div class="col-12 col-md-4 text-center">
+									<input type="file" id="photo" name="photo" onchange="setValueFile('photo')"
+										class="form-control-file">
+								</div>
+								<div class="col-12 col-md-4">
+									<button id="btn-view-photo" type="button" class="btn btn-info btn-sm" style="display:none;">
+										<i class="fa fa-download" title="Descargar documento"></i>
+									</button>
+								</div>
+							</div>
+							<div class="row form-group">
+								<div class="col-12 col-md-4 text-center">
+									<label for=certifications class="form-control-label">Certificaciones:</label>
+								</div>
+								<div class="col-12 col-md-4 text-center">
+									<input type="file" id="certifications" name="certifications" onchange="setValueFile('certifications')"
+										class="form-control-file">
+								</div>
+								<div class="col-12 col-md-4">
+									<button id="btn-view-certifications" type="button" class="btn btn-info btn-sm" style="display:none;">
+										<i class="fa fa-download" title="Descargar documento"></i>
+									</button>
+								</div>
+							</div>
+						</div>
+                    </form>
+				</div>
+				<!-- Accion -->
+				<div class="form-group">
+					<button id="btn-cancel-employee" type="button" class="btn btn-danger btn-sm" style="display:none;">
+						<i class="fa fa-close"></i> Cancelar
+					</button>
+					<button id="btn-save-employee" type="button" class="btn btn-primary btn-sm" style="display:none;">
+						<i class="fa fa-plus"></i> Guardar
+					</button>
+				</div>
+				<!-- Accion -->
+				<div class="form-group">
+					<button id="btn-cancel-view-employee" type="button" class="btn btn-danger btn-sm" style="display:none;">
+						<i class="fa fa-reply"></i> Regresar
+					</button>
+					<button id="btn-download-view-employee" type="button" class="btn btn-info btn-sm" style="display:none;">
+						<i class="fa fa-download"></i> Descargar
+					</button>
+				</div>
+				<!-- View Doc-->
+				<div id="view-employee" class="card" style="display: none;">
+					<div class="card-header">
+						<h4 id="lTypeDocument" class="title-edit"></h4>
+					</div>
+					<!-- View Document -->
+					<div class="card-body">
+						<!-- Content -->
+						<div id="contentDocEmployee" class="text-center"></div>
+					</div>
+				</div>
+				<!-- HTML BODY end -->
+            </div>
+        </div> 
+        <!-- .content end -->
+        
+    </div><!-- /#right-panel -->
+
+    <!-- Right Panel -->
+
+    <script src="../assets/js/vendor/jquery-2.1.4.min.js"></script>
+    <script src="../assets/plugins/jquery/jquery.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js"></script>
+    <script src="../assets/js/plugins.js"></script>
+    <script src="../assets/js/main.js"></script>
+    
+    <script src="../assets/js/lib/data-table/datatables.gral.js"></script>
+    <script src="../assets/js/lib/data-table/dataTables.bootstrap.min.js"></script>
+    <script src="../assets/js/lib/data-table/dataTables.buttons.min.js"></script>
+    <script src="../assets/js/lib/data-table/buttons.bootstrap.min.js"></script>
+    <script src="../assets/js/lib/data-table/jszip.min.js"></script>
+    <script src="../assets/js/lib/data-table/pdfmake.min.js"></script>
+    <script src="../assets/js/lib/data-table/vfs_fonts.js"></script>
+    <script src="../assets/js/lib/data-table/buttons.html5.min.js"></script>
+    <script src="../assets/js/lib/data-table/buttons.print.min.js"></script>
+    <script src="../assets/js/lib/data-table/buttons.colVis.min.js"></script>
+    <script src="../assets/js/lib/data-table/datatables-init.js"></script>
+    <script src="../assets/js/lib/chosen/chosen.jquery.min.js"></script>
+    <script src="../assets/select2/js/select2.full.min.js"></script>
+    <script src="../assets/js/jAlert/jAlert.min.js"></script>
+	<script src="../assets/js/jAlert/jAlert-functions.min.js"></script>
+	<script src="../assets/bootstrap-validator-master/js/validator.js"></script>
+	    
+    <!-- Controllers -->
+    <script src="../assets/js/utils/models.js"></script>
+    <script src="../assets/js/adm/employees-system-personal.js"></script>
+    <script src="../assets/js/utils/commons.js"></script>
+    <script src="../assets/js/utils/mime.js"></script>
+</body>
+</html>

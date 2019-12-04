@@ -1,0 +1,170 @@
+<!doctype html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang=""> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8" lang=""> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9" lang=""> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang=""> <!--<![endif]-->
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Plan de carrera - Agregar Actividad</title>
+    <meta name="description" content="Sufee Admin - HTML5 Admin Template">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link rel="apple-touch-icon" href="../apple-icon.png">
+    <link rel="shortcut icon" href="../favicon.ico">
+
+    <link rel="stylesheet" href="../assets/css/normalize.css">
+    <link rel="stylesheet" href="../assets/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../assets/css/font-awesome.min.css">
+    <link rel="stylesheet" href="../assets/css/themify-icons.css">
+    <link rel="stylesheet" href="../assets/css/flag-icon.min.css">
+    <link rel="stylesheet" href="../assets/css/cs-skin-elastic.css">
+    <!-- <link rel="stylesheet" href="assets/css/bootstrap-select.less"> -->
+    <link rel="stylesheet" href="../assets/scss/style.css">
+    <link rel="stylesheet" href="../assets/css/lib/chosen/chosen.min.css">
+    
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,600,700,800' rel='stylesheet' type='text/css'>
+    <!-- <script type="text/javascript" src="https://cdn.jsdelivr.net/html5shiv/3.7.3/html5shiv.min.js"></script> -->
+</head>
+<body>
+	
+	<!-- Left Panel -->
+    <aside id="left-panel" class="left-panel"></aside>
+    <!-- Left Panel -->
+
+    <!-- Right Panel -->
+    <div id="right-panel" class="right-panel">
+
+        <!-- Header init-->
+        <header id="header" class="header"></header>
+        <!-- Header end -->
+        
+        <!-- .content init -->
+        <div class="content mt-3">
+        	<div class="card">
+        	<!-- ###### Messages for user, do not remove ###### -->
+	            <div class="card-header">
+					<h3 class="title-edit">Plan de carrera</h3>
+				</div>
+	            <div class="col-sm-12">
+	                <div class="alert alert-dismissible fade show" role="alert" style="display: none; margin-top: 10px" id="div-message">
+	                  <div id="message-content"></div>
+	                </div>
+	            </div>
+	            <!-- HTML BODY init -->
+	            <div>
+					<div class="card">
+						<div class="card-header">
+							<strong class="title-edit">Agregar Actividad</strong>
+						</div>
+						<div class="card-body card-block">
+							<form action="" method="post" enctype="multipart/form-data"
+								class="form-horizontal">
+								<div class="row form-group">
+									<div class="col col-md-3">
+										<label for="text-input" class=" form-control-label">Actividad</label>
+									</div>
+									<div class="col-12 col-md-9">
+										<input type="text" id="text-input" name="text-input"
+											placeholder="Nombre de la actividad" class="form-control">
+									</div>
+								</div>
+
+								<div class="row form-group">
+									<div class="col col-md-3">
+										<label for="select" class=" form-control-label">Asignar a</label>
+									</div>
+									<div class="col-12 col-md-9">
+									<select id="select-asignatr" data-placeholder="Asignar a"
+											multiple class="standardSelect" tabindex="5">
+											<option value=""></option>
+											<optgroup label="SSTI Soluciones de Ti">
+												<option>Brian Rodriguez</option>
+												<option>Nazario Gonzalez</option>
+											</optgroup>
+											<optgroup label="Infraestructura">
+												<option>Brizeida Chavez</option>
+											</optgroup>
+											<optgroup label="Seguridad e inovación">
+												<option>Leticia Lezama</option>
+											</optgroup>
+										</select>
+									</div>
+								</div>
+
+								<div class="row form-group">
+									<div class="col col-md-3">
+										<label for="select" class=" form-control-label">Tipo de actividad</label>
+									</div>
+									<div class="col-12 col-md-9">
+										<select name="select" id="select" class="form-control">
+											<option value="0">Seleccionar actividad</option>
+											<option value="1">Capacitación</option>
+											<option value="2">Cursos</option>
+											<option value="3">Certificación</option>
+											<option value="4">Carrera</option>
+											<option value="5">Taller</option>
+											<option value="6">Platica</option>
+											<option value="7">Diplomas</option>
+											<option value="8">Webinar</option>
+											<option value="9">Conferencias</option>
+											<option value="10">Evento</option>
+										</select>
+									</div>
+								</div>
+								<div class="row form-group">
+									<div class="col col-md-3">
+										<label for="textarea-input" class=" form-control-label">Descripción</label>
+									</div>
+									<div class="col-12 col-md-9">
+										<textarea name="textarea-input" id="textarea-input" rows="9"
+											placeholder="Descripción..." class="form-control"></textarea>
+									</div>
+								</div>
+								<div class="row form-group">
+									<button id="btn-add" type="button" class="btn btn-primary btn-sm">
+										<i class="fa fa-dot-circle-o"></i> Agregar
+									</button>
+									<button type="reset" class="btn btn-danger btn-sm">
+										<i class="fa fa-ban"></i> Vaciar
+									</button>
+								</div>
+							</form>
+						</div>
+					</div>
+				</div>
+				
+				<!-- HTML BODY end -->
+            </div>
+        </div> 
+        <!-- .content end -->
+        
+    </div><!-- /#right-panel -->
+
+    <!-- Right Panel -->
+
+    <script src="../assets/js/vendor/jquery-2.1.4.min.js"></script>
+    <script src="../assets/plugins/jquery/jquery.js"></script>
+    <script src="../assets/js/popper.min.js"></script>
+    <script src="../assets/js/plugins.js"></script>
+    <script src="../assets/js/main.js"></script>
+    <script src="../assets/js/lib/chosen/chosen.jquery.min.js"></script>
+    
+    <!-- Controllers -->
+    <script src="../assets/js/utils/models.js"></script>
+    <script src="../assets/js/career/plan-add.js"></script>
+    <script src="../assets/js/utils/commons.js"></script>
+
+	<script>
+        jQuery(document).ready(function() {
+            jQuery(".standardSelect").chosen({
+                disable_search_threshold: 10,
+                no_results_text: "Oops, no se encontro nada!",
+                width: "100%"
+            });
+        });
+    </script>
+
+
+</body>
+</html>

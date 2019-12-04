@@ -1,0 +1,100 @@
+/* This css file is to over write bootstarp css
+--------------------------------------------------------- /
+* Theme Name: Kardex Template
+* Theme URI: https://www.buromc.com/
+* Author: Nazario Dazaeev Gonzalez Herrera
+* Author URI: https://www.buromc.com/
+* Description: Material
+* Version: 1.0.0
+* Tags: html
+--------------------------------------------------------- */
+.precarga { background:transparent url(../../assets/plugins/tinymce/skins/lightgray/img/loader.gif) center no-repeat	}
+
+input[type="text"], input[type="password"], input[type="date"], input[type="number"], input[type="email"], 
+select.form-control {
+	background: transparent;
+	border: none;
+	border-bottom: 2px solid #E0F2F7;
+	-webkit-box-shadow: none;
+	box-shadow: none;
+	border-radius: 0;
+}
+input[type="text"]:focus,
+select.form-control:focus {
+	-webkit-box-shadow: none;
+	box-shadow: none;
+}
+input[type="password"]:focus,
+select.form-control:focus {
+	-webkit-box-shadow: none;
+	box-shadow: none;
+}
+input[type="date"]:focus,
+select.form-control:focus {
+	-webkit-box-shadow: none;
+	box-shadow: none;
+}
+input[type="number"]:focus,
+select.form-control:focus {
+	-webkit-box-shadow: none;
+	box-shadow: none;
+}
+input[type="email"]:focus,
+select.form-control:focus {
+	-webkit-box-shadow: none;
+	box-shadow: none;
+}
+
+/* div#preloader { */
+/*   position: fixed; */
+/*   left: 0; */
+/*   top: 0; */
+/*   z-index: 999; */
+/*   width: 100%; */
+/*   height: 100%; */
+/*   overflow: visible; */
+/*   background: transparent url(../../assets/plugins/light-gallery/img/loading_s.gif) no-repeat center center; */
+/* } */
+
+div#preloader-process {
+  position: fixed;
+  left: 0;
+  top: 0;
+  z-index: 999;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  background: transparent url(../../assets/plugins/tinymce/skins/lightgray/img/loader.gif) no-repeat center center;
+}
+
+/* *********** Notifications *********** */
+.scrollbar
+{
+    margin-left: 30px;
+    float: left;
+    background: #F5F5F5;
+    overflow: auto;
+    max-height: 80vh;
+    margin-bottom: 25px;
+}
+.force-overflow
+{
+    min-height: 50px;
+}
+/*
+ *  STYLE 3
+ */
+#div-notification::-webkit-scrollbar-track
+{
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+    background-color: #F5F5F5;
+}
+#div-notification::-webkit-scrollbar
+{
+    width: 1px;
+    background-color: #F5F5F5;
+}
+#div-notification::-webkit-scrollbar-thumb
+{
+    background-color: #e0e0d1;
+}
