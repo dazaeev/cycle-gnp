@@ -205,9 +205,20 @@ public interface UserService {
 	public GcloudJobs findGcloudJobsByNameJob(String nameJob);
 	
 	/**
+	 * @param employeeGral
+	 * @return
+	 */
+	public List<GcloudJobs> findByGcloudJobsEmployeeGral(EmployeeGral employeeGral);
+	
+	/**
 	 * @param gcloudJobs
 	 */
 	public void saveGcloudJobs(GcloudJobs gcloudJobs);
+	
+	/**
+	 * @param gcloudJobs
+	 */
+	public void deleteGcloudJobsInBatch(List<GcloudJobs> gcloudJobs);
 	
 	/**
 	 * @param glId

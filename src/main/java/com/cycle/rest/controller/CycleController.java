@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.cycle.model.EmployeeGral;
 import com.cycle.model.User;
 import com.cycle.service.DashboardService;
+import com.cycle.service.GcloudService;
 import com.cycle.service.UserService;
 import com.cycle.utils.Utils;
 
@@ -32,7 +33,8 @@ public class CycleController {
 	private UserService userService;
 	@Autowired
 	private DashboardService dashboardService;
-	
+	@Autowired
+	private GcloudService gcloudService;
 	/*
 	 *******************************************************************************************************
 	 *******************************************************************************************************
@@ -84,7 +86,7 @@ public class CycleController {
 			if(user == null) {
 				throw new ServletException("Usuario inexistente.");
 			}
-			responseData = Utils.startingProcessesGcloud(user, userService);
+			responseData = Utils.startingProcessesGcloud(user, userService, gcloudService);
 		} catch (Exception e){
 			Map<String, Object> row = new TreeMap<>();
             row.put("status", "Nok");

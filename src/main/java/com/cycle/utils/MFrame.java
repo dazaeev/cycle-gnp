@@ -138,7 +138,7 @@ public class MFrame implements Serializable {
 			ftpClient.site("filetype=seq");
 			LOGGER.info(ftpClient.getReplyString());
 			
-			String sRemoteFileNameJob = "'TRDESA.BTCH.CARDS.HOMOPRE(JDIRECT)'";
+			String sRemoteFileNameJob = "'TRDESA.BTCH.CARDS.HOMOPRE.JDIRECT'";
 			InputStream isJob = ftpClient.retrieveFileStream(sRemoteFileNameJob);
 			LOGGER.info(ftpClient.getReplyString());
 			FileUtils.copyInputStreamToFile(isJob, new File(rootMf + "JDIRECT"));

@@ -430,10 +430,20 @@ public class UserServiceImpl implements UserService {
 	public GcloudJobs findGcloudJobsByNameJob(String nameJob) {
 		return gcloudJobsRepository.findByNameJob(nameJob);
 	}
+	
+	@Override
+	public List<GcloudJobs> findByGcloudJobsEmployeeGral(EmployeeGral employeeGral) {
+		return gcloudJobsRepository.findByEmployeeGral(employeeGral);
+	}
 
 	@Override
 	public void saveGcloudJobs(GcloudJobs gcloudJobs) {
 		gcloudJobsRepository.save(gcloudJobs);
+	}
+	
+	@Override
+	public void deleteGcloudJobsInBatch(List<GcloudJobs> gcloudJobs) {
+		gcloudJobsRepository.deleteInBatch(gcloudJobs);
 	}
 
 	@Override

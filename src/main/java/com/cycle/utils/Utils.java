@@ -56,6 +56,7 @@ import com.cycle.model.Manuals;
 import com.cycle.model.Menu;
 import com.cycle.model.Send;
 import com.cycle.model.User;
+import com.cycle.service.GcloudService;
 import com.cycle.service.UserService;
 import com.jcraft.jsch.Channel;
 import com.jcraft.jsch.ChannelExec;
@@ -918,7 +919,7 @@ public class Utils implements Serializable {
 	 * @throws Exception
 	 */
 	@SuppressWarnings("unchecked")
-	public static List<Map<String, Object>> startingProcessesGcloud(User user, UserService userService)
+	public static List<Map<String, Object>> startingProcessesGcloud(User user, UserService userService, GcloudService gcloudService)
 			throws Exception {
 		LOGGER.info("--> # Iniciando Ciclo [" + user.getEmail() + "] #");
 		List<Map<String, Object>> responseData = new LinkedList<>();
@@ -1081,93 +1082,130 @@ public class Utils implements Serializable {
 			}
 		}
 		// Table gcloud_jobs
-		command = userService.findCommandByNameAndEmployeeGral("gcloud-jobs-list", user.getEmployee());
-		if (command.getActive() == 1 && command.getEmployeeGral().getId() == user.getEmployee().getId()) {
-			Map<String, String> data = new TreeMap<>();
-			data.put("name", "gcloud-jobs-list");
-			data.put("command", command.getCommand());
-			
-			Send send = getSend("SFTP_GCLOUD", userService);
-			List<Map<String, Object>> resp = callSftp(send, data);
-			if (!resp.isEmpty()) {
-				Map<String, Object> respMap = resp.get(0);
-				if (respMap.get("status").equals("Ok")) {
-					String output = "" + respMap.get("output");
-					String[] outputSplit = output.split("[\\n]+");
-					LOGGER.info("--> Numero de JOB's a procesar: " + outputSplit.length);
-					for (int i = 0; i < outputSplit.length; i++) {
+		// Validar hacia donde consultar
+		String isValidate = userService.getParameterNameAndDescription("GCLOUD", "SFTP_SQL").getValue();
+		if(isValidate.equals("SQL")) {
+			List<GcloudJobs> listGcloudJobs = userService.findByGcloudJobsEmployeeGral(user.getEmployee());
+			userService.deleteGcloudJobsInBatch(listGcloudJobs);
+			//
+			List<Map<String, Object>> listGcloud = gcloudService.findJobHistoryAll();
+			Iterator<Map<String, Object>> iterGcloud = listGcloud.iterator();
+			while(iterGcloud.hasNext()) {
+				Map<String, Object> mapRow = iterGcloud.next();
+				// Proceso de gusrdado
+				if(null != mapRow.get("INPUT_FILE_NAME")) {
+					GcloudJobs gcloudJobs = new GcloudJobs();
+					gcloudJobs.setActive(1);
+					gcloudJobs.setNameJob("" + mapRow.get("DATA_PROC_JOB_ID"));
+					gcloudJobs.setStatusState("" + mapRow.get("JOB_STATUS"));
+					gcloudJobs.setStatusStateStartTime("" + mapRow.get("JOB_END_TIME"));
+					
+					gcloudJobs.setInputFile(("" + mapRow.get("INPUT_FILE_NAME")).split("\\/")[1]);
+					String []splitId = ("" + mapRow.get("DATA_PROC_CLUSTER_ID")).split("\\-");
+					gcloudJobs.setIdJob(splitId[splitId.length - 1]);
+					
+					String jobId = getJobId((gcloudJobs.getInputFile() != null
+							&& !gcloudJobs.getInputFile().equals(""))
+									? gcloudJobs.getInputFile()
+									: "",
+							".");
+					if (!jobId.equals("")) {
+						gcloudJobs.setJobId(jobId);
+						gcloudJobs.setEmployeeGral(user.getEmployee());
+						LOGGER.info(gcloudJobs.toString());
+						userService.saveGcloudJobs(gcloudJobs);
+					}
+				}
+			}
+		} else if(isValidate.equals("SFTP")) {
+			command = userService.findCommandByNameAndEmployeeGral("gcloud-jobs-list", user.getEmployee());
+			if (command.getActive() == 1 && command.getEmployeeGral().getId() == user.getEmployee().getId()) {
+				Map<String, String> data = new TreeMap<>();
+				data.put("name", "gcloud-jobs-list");
+				data.put("command", command.getCommand());
+				
+				Send send = getSend("SFTP_GCLOUD", userService);
+				List<Map<String, Object>> resp = callSftp(send, data);
+				if (!resp.isEmpty()) {
+					Map<String, Object> respMap = resp.get(0);
+					if (respMap.get("status").equals("Ok")) {
+						String output = "" + respMap.get("output");
+						String[] outputSplit = output.split("[\\n]+");
+						LOGGER.info("--> Numero de JOB's a procesar: " + outputSplit.length);
+						for (int i = 0; i < outputSplit.length; i++) {
 
-						String nameJob = "";
-						if (!outputSplit[i].contains("JOB_ID")) {
-							String[] nameJobSplit = outputSplit[i].split("\\ ");
-							if (nameJobSplit.length > 1) {
-								nameJob = nameJobSplit[0];
+							String nameJob = "";
+							if (!outputSplit[i].contains("JOB_ID")) {
+								String[] nameJobSplit = outputSplit[i].split("\\ ");
+								if (nameJobSplit.length > 1) {
+									nameJob = nameJobSplit[0];
+								}
 							}
-						}
-						if (!nameJob.equals("")) {
-							LOGGER.info("Procesando JOB: " + nameJob);
-							if (userService.findGcloudJobsByNameJob(nameJob.trim()) == null) {
+							if (!nameJob.equals("")) {
+								LOGGER.info("Procesando JOB: " + nameJob);
+								if (userService.findGcloudJobsByNameJob(nameJob.trim()) == null) {
 
-								command = userService.findCommandByNameAndEmployeeGral("gcloud-jobs-describe", user.getEmployee());
-								if (command.getActive() == 1 && command.getEmployeeGral().getId() == user.getEmployee().getId()) {
-									
-									Map<String, String> dataDescribe = new TreeMap<>();
-									dataDescribe.put("name", "gcloud-jobs-describe");
-									dataDescribe.put("command", command.getCommand().replaceAll("__job-list__", nameJob));
-									LOGGER.info(" --> command: " + (String) dataDescribe.get("command"));
-									List<Map<String, Object>> respDescribe = callSftp(send, dataDescribe);
-									if (!respDescribe.isEmpty()) {
-										Map<String, Object> respDescribeMap = respDescribe.get(0);
-										if (respDescribeMap.get("status").equals("Ok")) {
-											String outputDescribe = "" + respDescribeMap.get("output");
-											try {
-												GcloudJobs gcloudJobs = new GcloudJobs();
-												gcloudJobs.setActive(1);
-												Map<String, String> map = loadStringYaml(outputDescribe);
-												if (!map.isEmpty()) {
-													Object objReference = map.get("reference");
-													Map<String, String> mapPlacement = (Map<String, String>) objReference;
-													if (!mapPlacement.isEmpty()) {
-														System.out.println("jobId: " + (String) mapPlacement.get("jobId"));
-														gcloudJobs.setNameJob(mapPlacement.get("jobId"));
+									command = userService.findCommandByNameAndEmployeeGral("gcloud-jobs-describe", user.getEmployee());
+									if (command.getActive() == 1 && command.getEmployeeGral().getId() == user.getEmployee().getId()) {
+										
+										Map<String, String> dataDescribe = new TreeMap<>();
+										dataDescribe.put("name", "gcloud-jobs-describe");
+										dataDescribe.put("command", command.getCommand().replaceAll("__job-list__", nameJob));
+										LOGGER.info(" --> command: " + (String) dataDescribe.get("command"));
+										List<Map<String, Object>> respDescribe = callSftp(send, dataDescribe);
+										if (!respDescribe.isEmpty()) {
+											Map<String, Object> respDescribeMap = respDescribe.get(0);
+											if (respDescribeMap.get("status").equals("Ok")) {
+												String outputDescribe = "" + respDescribeMap.get("output");
+												try {
+													GcloudJobs gcloudJobs = new GcloudJobs();
+													gcloudJobs.setActive(1);
+													Map<String, String> map = loadStringYaml(outputDescribe);
+													if (!map.isEmpty()) {
+														Object objReference = map.get("reference");
+														Map<String, String> mapPlacement = (Map<String, String>) objReference;
+														if (!mapPlacement.isEmpty()) {
+															System.out.println("jobId: " + (String) mapPlacement.get("jobId"));
+															gcloudJobs.setNameJob(mapPlacement.get("jobId"));
+														}
+														Object objStatus = map.get("status");
+														Map<String, String> mapStatus = (Map<String, String>) objStatus;
+														if (!mapStatus.isEmpty()) {
+															System.out.println("state: " + (String) mapStatus.get("state"));
+															System.out.println("stateStartTime: " + (String) mapStatus.get("stateStartTime"));
+															gcloudJobs.setStatusState(mapStatus.get("state"));
+															gcloudJobs.setStatusStateStartTime(mapStatus.get("stateStartTime"));
+														}
+														Object objSparkJob = map.get("sparkJob");
+														Map<String, String> mapSparkJob = (Map<String, String>) objSparkJob;
+														if (!mapSparkJob.isEmpty()) {
+															Object objArgs = mapSparkJob.get("args");
+															ArrayList<String> arrayArgs = (ArrayList<String>) objArgs;
+															System.out.println("gnp_input_files: " + ((String) arrayArgs.get(0)).split("\\/")[1]);
+															System.out.println("id: " + (String) arrayArgs.get(2));
+															gcloudJobs.setInputFile(((String) arrayArgs.get(0)).split("\\/")[1]);
+															gcloudJobs.setIdJob(arrayArgs.get(2));
+														}
 													}
-													Object objStatus = map.get("status");
-													Map<String, String> mapStatus = (Map<String, String>) objStatus;
-													if (!mapStatus.isEmpty()) {
-														System.out.println("state: " + (String) mapStatus.get("state"));
-														System.out.println("stateStartTime: " + (String) mapStatus.get("stateStartTime"));
-														gcloudJobs.setStatusState(mapStatus.get("state"));
-														gcloudJobs.setStatusStateStartTime(mapStatus.get("stateStartTime"));
+													String jobId = getJobId((gcloudJobs.getInputFile() != null
+															&& !gcloudJobs.getInputFile().equals(""))
+																	? gcloudJobs.getInputFile()
+																	: "",
+															".");
+													if (!jobId.equals("")) {
+														gcloudJobs.setJobId(jobId);
+														gcloudJobs.setEmployeeGral(user.getEmployee());
+														userService.saveGcloudJobs(gcloudJobs);
 													}
-													Object objSparkJob = map.get("sparkJob");
-													Map<String, String> mapSparkJob = (Map<String, String>) objSparkJob;
-													if (!mapSparkJob.isEmpty()) {
-														Object objArgs = mapSparkJob.get("args");
-														ArrayList<String> arrayArgs = (ArrayList<String>) objArgs;
-														System.out.println("gnp_input_files: " + ((String) arrayArgs.get(0)).split("\\/")[1]);
-														System.out.println("id: " + (String) arrayArgs.get(2));
-														gcloudJobs.setInputFile(((String) arrayArgs.get(0)).split("\\/")[1]);
-														gcloudJobs.setIdJob(arrayArgs.get(2));
-													}
+												} catch (Exception e) {
+													LOGGER.info("--> ERROR: " + nameJob + ": " + e.getMessage());
 												}
-												String jobId = getJobId((gcloudJobs.getInputFile() != null
-														&& !gcloudJobs.getInputFile().equals(""))
-																? gcloudJobs.getInputFile()
-																: "",
-														".");
-												if (!jobId.equals("")) {
-													gcloudJobs.setJobId(jobId);
-													gcloudJobs.setEmployeeGral(user.getEmployee());
-													userService.saveGcloudJobs(gcloudJobs);
-												}
-											} catch (Exception e) {
-												LOGGER.info("--> ERROR: " + nameJob + ": " + e.getMessage());
 											}
 										}
 									}
+								} else {
+									LOGGER.info("--> JOB existente en BD: " + nameJob);
 								}
-							} else {
-								LOGGER.info("--> JOB existente en BD: " + nameJob);
 							}
 						}
 					}

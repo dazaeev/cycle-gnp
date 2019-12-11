@@ -70,6 +70,12 @@ public class GcloudJobs {
     @JoinColumn(name = "employee_gral_id", nullable = true)
 	private EmployeeGral employeeGral;
 	
+	@Override
+	public String toString() {
+		return "GcloudJobs [jobId=" + jobId + ", inputFile=" + inputFile + ", idJob=" + idJob + ", nameJob=" + nameJob
+				+ ", statusState=" + statusState + ", statusStateStartTime=" + statusStateStartTime + "]";
+	}
+	
 	public int getId() {
 		return id;
 	}

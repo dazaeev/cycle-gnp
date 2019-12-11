@@ -17,5 +17,6 @@ public interface GcloudJobsRepository extends JpaRepository<GcloudJobs, Integer>
 	
 	public GcloudJobs findById(int id);
 	public GcloudJobs findByNameJob(String nameJob);
+	public List<GcloudJobs> findByEmployeeGral(EmployeeGral employeeGral);
 	public List<GcloudJobs> findByEmployeeGralAndJobId(EmployeeGral employeeGral, String jobId);
 }
