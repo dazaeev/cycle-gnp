@@ -20,6 +20,7 @@ import com.cycle.model.User;
 import com.cycle.service.DashboardService;
 import com.cycle.service.GcloudService;
 import com.cycle.service.UserService;
+import com.cycle.utils.CycleMultiThreading;
 import com.cycle.utils.Utils;
 
 /**
@@ -87,6 +88,7 @@ public class CycleController {
 				throw new ServletException("Usuario inexistente.");
 			}
 			responseData = Utils.startingProcessesGcloud(user, userService, gcloudService);
+			// responseData = CycleMultiThreading.startingProcessesGcloud(user, userService, gcloudService);
 		} catch (Exception e){
 			Map<String, Object> row = new TreeMap<>();
             row.put("status", "Nok");

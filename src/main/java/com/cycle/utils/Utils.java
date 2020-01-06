@@ -900,6 +900,7 @@ public class Utils implements Serializable {
             		+ "\n\t\tdestinationPath: " + send.getDestinationPath()
             		+ "\n\t\tchanel: " + send.getChanel());
 		} catch (Exception e) {
+			LOGGER.info("Exception: " + e.getMessage());
 			throw new Exception(e.getMessage());
 		} finally {
 	        if (channel != null && channel.isConnected()) {
@@ -1088,7 +1089,11 @@ public class Utils implements Serializable {
 			List<GcloudJobs> listGcloudJobs = userService.findByGcloudJobsEmployeeGral(user.getEmployee());
 			userService.deleteGcloudJobsInBatch(listGcloudJobs);
 			//
-			List<Map<String, Object>> listGcloud = gcloudService.findJobHistoryAll();
+			List<Map<String, Object>> listGcloud = gcloudService.findJobHistoryAll(
+					userService.getParameterNameAndDescription("SQL_GCLOUD", "user").getValue(),
+					userService.getParameterNameAndDescription("SQL_GCLOUD", "cve").getValue(),
+					userService.getParameterNameAndDescription("SQL_GCLOUD", "url").getValue(),
+					userService.getParameterNameAndDescription("SQL_GCLOUD", "driverClassName").getValue());
 			Iterator<Map<String, Object>> iterGcloud = listGcloud.iterator();
 			while(iterGcloud.hasNext()) {
 				Map<String, Object> mapRow = iterGcloud.next();
@@ -1099,6 +1104,7 @@ public class Utils implements Serializable {
 					gcloudJobs.setNameJob("" + mapRow.get("DATA_PROC_JOB_ID"));
 					gcloudJobs.setStatusState("" + mapRow.get("JOB_STATUS"));
 					gcloudJobs.setStatusStateStartTime("" + mapRow.get("JOB_END_TIME"));
+					gcloudJobs.setOutputFilePath("" + mapRow.get("OUTPUT_FILE_PATH"));
 					
 					gcloudJobs.setInputFile(("" + mapRow.get("INPUT_FILE_NAME")).split("\\/")[1]);
 					String []splitId = ("" + mapRow.get("DATA_PROC_CLUSTER_ID")).split("\\-");

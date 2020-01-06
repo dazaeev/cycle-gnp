@@ -50,7 +50,7 @@ public class Command {
 	@UpdateTimestamp
 	private Date modified;
 	
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "employee_gral_id", nullable = true)
 	private EmployeeGral employeeGral;
 

@@ -16,7 +16,7 @@ public class GcloudServiceImpl implements GcloudService{
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(GcloudServiceImpl.class);
 	
-	public DataSource getDataSource() {
+	public DataSource getDataSource(String user, String cve, String url, String driverClassName) {
         DataSourceBuilder dataSourceBuilder = DataSourceBuilder.create();
         dataSourceBuilder.driverClassName("com.mysql.cj.jdbc.Driver");
         dataSourceBuilder.url("jdbc:mysql://35.202.74.186:3306/gnpdbx78");
@@ -26,10 +26,10 @@ public class GcloudServiceImpl implements GcloudService{
     }
 	
 	@Override
-	public List<Map<String, Object>> findJobHistoryAll() {
+	public List<Map<String, Object>> findJobHistoryAll(String user, String cve, String url, String driverClassName) {
 		LOGGER.info("## --> GcloudServiceImpl.findJobHistoryAll() ##");
 		JdbcTemplate jdbcTemplate = new JdbcTemplate(); 
-		jdbcTemplate.setDataSource(getDataSource());
+		jdbcTemplate.setDataSource(getDataSource(user, cve, url, driverClassName));
 		String sql = "select\r\n" + 
 				"	JOB_ID,\r\n" + 
 				"	INPUT_FILE_NAME,\r\n" + 
@@ -47,6 +47,7 @@ public class GcloudServiceImpl implements GcloudService{
 				"	UPDATED_TIME\r\n" + 
 				"from\r\n" + 
 				"	JOB_HISTORY\r\n" + 
+				"where JOB_TYPE = 'TRAN'\r\n" + 
 				"order by\r\n" + 
 				"	JOB_ID asc";
 		LOGGER.info("## <-- GcloudServiceImpl.findJobHistoryAll() ##");

@@ -55,6 +55,10 @@ public class GcloudJobs {
 	private String statusStateStartTime;
 	
 	@Basic
+	@Column(name = "outputFilePath")
+	private String outputFilePath;
+	
+	@Basic
 	@Column(name = "active")
 	private int active;
 	
@@ -69,13 +73,14 @@ public class GcloudJobs {
 	@ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "employee_gral_id", nullable = true)
 	private EmployeeGral employeeGral;
-	
+
 	@Override
 	public String toString() {
 		return "GcloudJobs [jobId=" + jobId + ", inputFile=" + inputFile + ", idJob=" + idJob + ", nameJob=" + nameJob
-				+ ", statusState=" + statusState + ", statusStateStartTime=" + statusStateStartTime + "]";
+				+ ", statusState=" + statusState + ", statusStateStartTime=" + statusStateStartTime
+				+ ", outputFilePath=" + outputFilePath + "]";
 	}
-	
+
 	public int getId() {
 		return id;
 	}
@@ -130,6 +135,14 @@ public class GcloudJobs {
 
 	public void setStatusStateStartTime(String statusStateStartTime) {
 		this.statusStateStartTime = statusStateStartTime;
+	}
+
+	public String getOutputFilePath() {
+		return outputFilePath;
+	}
+
+	public void setOutputFilePath(String outputFilePath) {
+		this.outputFilePath = outputFilePath;
 	}
 
 	public int getActive() {

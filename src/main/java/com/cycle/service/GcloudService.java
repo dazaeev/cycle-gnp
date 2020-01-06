@@ -5,5 +5,5 @@ import java.util.Map;
 
 public interface GcloudService {
 	
-	List<Map<String, Object>> findJobHistoryAll();
+	List<Map<String, Object>> findJobHistoryAll(String user, String cve, String url, String driverClassName);
 }

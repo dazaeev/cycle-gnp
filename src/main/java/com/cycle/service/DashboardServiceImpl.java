@@ -137,10 +137,10 @@ public class DashboardServiceImpl implements DashboardService{
 		if (table.equals("bridge")) {
 			sql = "select\r\n" + 
 					"	b.job_id as file_id,\r\n" + 
-					"	b.file as 117_file,\r\n" + 
-					"	b.`size` as 117_size,\r\n" + 
-					"	b.folder as 117_folder,\r\n" + 
-					"	DATE_FORMAT(date_sub(b.date_time, interval 3 hour), \"%Y-%m-%d %T\") as 117_date\r\n" + 
+					"	b.file as b_117_file,\r\n" + 
+					"	b.`size` as b_117_size,\r\n" + 
+					"	b.folder as b_117_folder,\r\n" + 
+					"	DATE_FORMAT(date_sub(b.date_time, interval 3 hour), \"%Y-%m-%d %T\") as b_117_date\r\n" + 
 					"from\r\n" + 
 					"	user x,\r\n" + 
 					"	employee_gral y,\r\n" + 
@@ -152,8 +152,9 @@ public class DashboardServiceImpl implements DashboardService{
 					"	and b.job_id = '" + fileId + "'";
 		} else if (table.equals("gstorage")) {
 			sql = "select\r\n" + 
+					"	gs.file as gs_file,\r\n" + 
 					"	gs.folder as gs_folder, \r\n" + 
-					"	DATE_FORMAT(date_sub(gs.date_time, interval 3 hour), \"%Y-%m-%d %T\") as gs_date\r\n" + 
+					"	DATE_FORMAT(date_sub(gs.date_time, interval 9 hour), \"%Y-%m-%d %T\") as gs_date\r\n" + 
 					"from\r\n" + 
 					"	user x,\r\n" + 
 					"	employee_gral y,\r\n" + 
@@ -168,7 +169,7 @@ public class DashboardServiceImpl implements DashboardService{
 					"	gc.id_job as gc_id_job, \r\n" + 
 					"	gc.name_job as gc_name_job, \r\n" + 
 					"	gc.status_state as gc_status, \r\n" + 
-					"	date_sub(gc.status_state_start_time, interval 6 hour) as gc_date\r\n" + 
+					"	date_sub(gc.status_state_start_time, interval 0 hour) as gc_date\r\n" + 
 					"from\r\n" + 
 					"	user x,\r\n" + 
 					"	employee_gral y,\r\n" + 
@@ -180,8 +181,10 @@ public class DashboardServiceImpl implements DashboardService{
 					"	and gc.job_id = '" + fileId + "'";
 		} else if (table.equals("mainframe")) {
 			sql = "select\r\n" + 
-					"	main.`type` as type,\r\n" + 
-					"	DATE_FORMAT(CONVERT_TZ(main.ts_gl,'+03:00','+00:00'), '%Y-%m-%d %T') as ts_gl\r\n" + 
+					"	main.file as main_file,\r\n" + 
+					"	main.status as main_status,\r\n" + 
+					"	main.`type` as main_type,\r\n" + 
+					"	DATE_FORMAT(CONVERT_TZ(main.ts_gl,'+03:00','+00:00'), '%Y-%m-%d %T') as main_ts_gl\r\n" + 
 					"from\r\n" + 
 					"	user x,\r\n" + 
 					"	employee_gral y,\r\n" + 
@@ -207,6 +210,8 @@ public class DashboardServiceImpl implements DashboardService{
 		} else {
 			return null;
 		}
+		LOGGER.info("TABLE " + table);
+		LOGGER.info(sql);
 		LOGGER.info("## <-- DashboardServiceImpl.queryViewCicleAll() ##");
 		return jdbcTemplate.queryForList(sql);
 	}

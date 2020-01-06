@@ -13,6 +13,12 @@ var GSTORAGE = null;
 var GCLOUD_JOBS = null;
 var MAINFRAME = null;
 var MANUALS = null;
+//
+let initCycle = null;
+let endCycle = null;
+//
+var element = $("#form-detail"); // global variable
+var getCanvas; // global variable
 // Cargando sistema
 $(document).ready(function($) {
 	startingSystemMenu();
@@ -31,6 +37,18 @@ $(document).ready(function($) {
 	$('#btn-cancel-view-detail').on('click', function () {
 	    hideViewDetail();
 	});
+	//
+	$('#btn-print-detail').on('click', function () {
+		html2canvas(element, {
+			onrendered: function (canvas) {
+				$("#previewImage").append(canvas);
+				getCanvas = canvas;
+			}
+		});
+		//
+		confirmDownloadDetail();
+	});
+    //
 });
 
 function initTable() {
@@ -118,6 +136,7 @@ function confirmRun(name, id, active) {
 
 function initCicle(name, id) {
 	console.log("Inicialdo proceso kaizen");
+	initCycle = new Date();
 	showPreloader(true);
 	var data = {
 			name : name,
@@ -128,9 +147,13 @@ function initCicle(name, id) {
 
 function respCicleGral(data) {
 	if(data) {
+		endCycle = new Date();
+		let finalDate = endCycle.getTime() - initCycle.getTime();
+		//
 		console.log(data);
+		console.log(millisToMinutesAndSeconds(finalDate));
 		if(data[0].status == 'Ok') {
-			showDivMessage('Proceso completado, ver reporte.', 'alert-info', 6000);
+			showDivMessage('Proceso completado en ' + millisToMinutesAndSeconds(finalDate) + ', ver reporte.', 'alert-info', 12000);
 		} else {
 			showDivMessage(data[0].error, 'alert-danger', 6000);
 		}
@@ -288,6 +311,19 @@ function respViewCicleGstorage(data) {
 
 function respViewCicleGcloudJobs(data) {
 	GCLOUD_JOBS = data;
+	if(data) {
+		console.log("Empezar proceso mainframe");
+		var data = {
+				table	: "mainframe",
+				user_id : ID_USER,
+				file_id : ID_FILE
+		}
+		sendPostAction(CICLE_CONTROLLER + 'viewCicleDetail' , data, respViewCicleMainframe);
+	}
+}
+
+function respViewCicleMainframe(data) {
+	MAINFRAME = data;
 	//
 	showViewDetail();
 	//
@@ -295,10 +331,205 @@ function respViewCicleGcloudJobs(data) {
 		console.log(BRIDGE);
 		console.log(GSTORAGE);
 		console.log(GCLOUD_JOBS);
+		console.log(MAINFRAME);
+		// iniciar proceso
+		$("#lFileId").text(ID_FILE);
+		$('html, body').animate({ scrollTop: $('#left-panel').offset().top }, 'slow');
+		// -- MAINFRAME --
+		var lMainframeGl = 
+		'	<div class="timeline-icon"><i class="fa fa-power-off"></i></div>' + 
+		'	<span class="year">MAINFRAME</span>                             ' + 
+		'	<div class="timeline-content">                                  ' + 
+		'		<h5 class="title">___main_ts_gl___</h5>                     ' + 
+		'		<p class="description">                                     ' + 
+		'			<strong>Archivo:</strong> ___main_file___               ' + 
+		'			<br>                                                    ' + 
+		'			<strong>Estatus:</strong> 0                             ' + 
+		'		</p>                                                        ' + 
+		'	</div>                                                          ';
+		var lMainframeRec = lMainframeGl;
+		if(MAINFRAME.length > 1) {
+			$("#mainframe-gl").css("opacity", "1");
+			$("#mainframe-rec").css("opacity", "1");
+			for (var i = 0; i < MAINFRAME.length; i++){
+				var row = MAINFRAME[i];
+				if(row.main_type == 'GL') {
+					lMainframeGl = lMainframeGl.replace('___main_ts_gl___', MAINFRAME[i].main_ts_gl);
+					lMainframeGl = lMainframeGl.replace('___main_file___', row.main_file);
+				} else if(row.main_type == 'REC') {
+					lMainframeRec = lMainframeRec.replace('___main_ts_gl___', MAINFRAME[i].main_ts_gl);
+					lMainframeRec = lMainframeRec.replace('___main_file___', row.main_file);
+				}
+			}
+			$("#mainframe-gl").empty();
+			var wrapperGl = $("#mainframe-gl");
+			$(wrapperGl).append(lMainframeGl); // add html
+			$("#mainframe-rec").empty();
+			var wrapperRec = $("#mainframe-rec");
+			$(wrapperRec).append(lMainframeRec); // add html
+		}
+		// -- BRIDGE --
+		var lBridgeGlCtrl = 
+		'	<div class="timeline-icon"><i class="fa fa-rocket"></i></div>' +
+		'	<span class="year">SFTP</span>                               ' +
+		'	<div class="timeline-content">                               ' +
+		'		<h5 class="title">___117_date___</h5>                    ' +
+		'		<p class="description">                                  ' +
+		'			                                                     ' +
+		'			___b_file_date___                                    ' +
+		'			                                                     ' +
+		'		</p>                                                     ' +
+		'	</div>                                                       ';
+		var lBridgeRec = lBridgeGlCtrl;
+		if(BRIDGE.length > 1) {
+			var bFileDateGlCtrl = '';
+			var bFileDateRec = '';
+			for (var i = 0; i < BRIDGE.length; i++){
+				var row = BRIDGE[i];
+				if(row.b_117_file.includes('CTRL_')) {
+					lBridgeGlCtrl = lBridgeGlCtrl.replace('___117_date___', row.b_117_date.split(' ')[0]);
+					bFileDateGlCtrl = bFileDateGlCtrl + 
+					'<strong>Archivo:</strong> ' + row.b_117_file +
+					'<br>'+
+					'- <strong>Fecha:</strong> ' + row.b_117_date +
+					'<br>'+
+					'- <strong>Folder:</strong> ' + row.b_117_folder +
+					'<br>';
+				} else if(row.b_117_file.includes('GL_')) {
+					lBridgeGlCtrl = lBridgeGlCtrl.replace('___117_date___', row.b_117_date.split(' ')[0]);
+					bFileDateGlCtrl = bFileDateGlCtrl + 
+					'<strong>Archivo:</strong> ' + row.b_117_file +
+					'<br>'+
+					'- <strong>Fecha:</strong> ' + row.b_117_date +
+					'<br>'+
+					'- <strong>Folder:</strong> ' + row.b_117_folder +
+					'<br>';
+				}
+				if(row.b_117_file.includes('REC_')) {
+					lBridgeRec = lBridgeRec.replace('___117_date___', row.b_117_date.split(' ')[0]);
+					bFileDateRec = bFileDateRec + 
+					'<strong>Archivo:</strong> ' + row.b_117_file +
+					'<br>'+
+					'- <strong>Fecha:</strong> ' + row.b_117_date +
+					'<br>'+
+					'- <strong>Folder:</strong> ' + row.b_117_folder +
+					'<br>';
+				}
+			}
+			lBridgeGlCtrl = lBridgeGlCtrl.replace('___b_file_date___', bFileDateGlCtrl);
+			$("#bridge-gl-ctrl").empty();
+			var wrapperBridgeGlCtrl = $("#bridge-gl-ctrl");
+			$(wrapperBridgeGlCtrl).append(lBridgeGlCtrl); // add html
+			//
+			lBridgeRec = lBridgeRec.replace('___b_file_date___', bFileDateRec);
+			$("#bridge-rec").empty();
+			var wrapperBridgeRec = $("#bridge-rec");
+			$(wrapperBridgeRec).append(lBridgeRec); // add html
+		}
+		// -- GSTORAGE --
+		var lGstorageGlCtrl = 
+		'	<div class="timeline-icon"><i class="fa fa-briefcase"></i></div>' +
+		'	<span class="year">GSTORAGE</span>                              ' +
+		'	<div class="timeline-content">                                  ' +
+		'		<h5 class="title">___gs_date___</h5>                        ' +
+		'		<p class="description">                                     ' +
+		'			                                                        ' +
+		'			___gs_file_folder_date___                               ' +
+		'			                                                        ' +
+		'		</p>                                                        ' +
+		'	</div>                                                          ';
+		if(GSTORAGE.length > 1) {
+			lGstorageGlCtrl = lGstorageGlCtrl.replace('___gs_date___', GSTORAGE[0].gs_date.split(' ')[0]);
+			lBodyGstorage = '';
+			for (var i = 0; i < GSTORAGE.length; i++){
+				var row = GSTORAGE[i];
+				lBodyGstorage = lBodyGstorage + '<strong>Archivo:</strong> ' + row.gs_file + '<br>';
+				lBodyGstorage = lBodyGstorage + '- <strong>Fecha:</strong> ' + row.gs_date + '<br>';
+				var gsFolder = row.gs_folder.split('/');
+				if(gsFolder.length > 3) {
+					lBodyGstorage = lBodyGstorage + '- <strong>Folder:</strong> ' + '/' + (gsFolder[gsFolder.length - 3] + '/' + gsFolder[gsFolder.length - 2]) + '<br>';
+				} else {
+					lBodyGstorage = lBodyGstorage + '- <strong>Folder:</strong> ' + row.gs_folder + '<br>';
+				}
+			}
+			lGstorageGlCtrl = lGstorageGlCtrl.replace('___gs_file_folder_date___', lBodyGstorage);
+			$("#gstorage-gl-ctrl").empty();
+			var wrapperGstorageGl = $("#gstorage-gl-ctrl");
+			$(wrapperGstorageGl).append(lGstorageGlCtrl); // add html
+		}
+		// -- GCLOUD --
+		var lGcloudJob = 
+		'	<div class="timeline-icon"><i class="fa fa-google"></i></div>' +
+		'	<span class="year">GCLOUD JOBS (SQL)</span>                        ' +
+		'	<div class="timeline-content">                               ' +
+		'		<h5 class="title">JOB ___id_job___</h5>                  ' +
+		'		<p class="description">                                  ' +
+		'			                                                     ' +
+		'			___gc_name_date_status___                            ' +
+		'			                                                     ' +
+		'			<br>                                                 ' +
+		'			<br>                                                 ' +
+		'			<br>                                                 ' +
+		'			                                                     ' +
+		'		</p>                                                     ' +
+		'	</div>                                                       ';
+		if(GCLOUD_JOBS.length > 0) {
+			lGcloudJob = lGcloudJob.replace('___id_job___', GCLOUD_JOBS[0].gc_id_job);
+			lBodyGcloud = '';
+			for (var i = 0; i < GCLOUD_JOBS.length; i++){
+				var row = GCLOUD_JOBS[i];
+				lBodyGcloud = lBodyGcloud + '<strong>Nombre:</strong> ' + row.gc_name_job + '<br>';
+				lBodyGcloud = lBodyGcloud + '- <strong>Fecha:</strong> ' + row.gc_date + '<br>';
+				lBodyGcloud = lBodyGcloud + '- <strong>Estatus:</strong> ' + row.gc_status + '<br>';
+			}
+			lGcloudJob = lGcloudJob.replace('___gc_name_date_status___', lBodyGcloud);
+			$("#gcloud-pre").empty();
+			var wrapperGcloud = $("#gcloud-pre");
+			$(wrapperGcloud).append(lGcloudJob); // add html
+		}
 	}
 	showPreloader(false);
 }
 //--> Termina proceso
+
+function millisToMinutesAndSeconds(millis) { 
+	var minutes = Math.floor(millis / 60000); 
+	var seconds = ((millis % 60000) / 1000).toFixed(0); 
+	return minutes + "min " + (seconds < 10 ? '0' : '') + seconds + ' sec'; 
+}
+
+function confirmDownloadDetail() {
+    $.jAlert({
+        'type': 'confirm',
+        'title': 'Confirmación',
+        'confirmQuestion': '¿ Descargar linea de tiempo ? <br> ' + $("#lFileId").text(),
+        'confirmBtnText': 'Si',
+        'denyBtnText': 'No estoy seguro',
+        'theme': 'tBeIt',
+        'size': 'sm',
+        'showAnimation': 'fadeInUp',
+        'hideAnimation': 'fadeOutDown',
+        'onConfirm': function (e, btn) {
+        	printDetail();
+        }
+    });
+}
+
+function printDetail() {
+	// form-detail
+	element = $("#form-detail")
+	var imgageData = getCanvas.toDataURL("image/png");
+    // Now browser starts downloading it instead of just showing it
+    var newData = imgageData.replace(/^data:image\/png/, "data:application/octet-stream");
+    //
+    var link = document.createElement("a");
+	link.setAttribute("target","_blank");
+	link.setAttribute("href",newData);
+	link.setAttribute("download",$("#lFileId").text() + "-timeline.png");
+	document.body.appendChild(link);
+	link.click();
+	document.body.removeChild(link);
+}
 
 function showViewEmployee() {
 	$('#info-employee').css('display', 'none');

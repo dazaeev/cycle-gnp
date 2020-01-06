@@ -1,5 +1,6 @@
 package com.cycle.utils;
 
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -135,19 +136,38 @@ public class MFrame implements Serializable {
 			// Extraer archivo JOB - TRDESA.BTCH.CARDS.HOMOPRE.JDIRECT
 			String rootMf = data.get("path-local");
 			(new File(rootMf)).mkdirs();
-			ftpClient.site("filetype=seq");
-			LOGGER.info(ftpClient.getReplyString());
 			
-			String sRemoteFileNameJob = "'TRDESA.BTCH.CARDS.HOMOPRE.JDIRECT'";
-			InputStream isJob = ftpClient.retrieveFileStream(sRemoteFileNameJob);
-			LOGGER.info(ftpClient.getReplyString());
-			FileUtils.copyInputStreamToFile(isJob, new File(rootMf + "JDIRECT"));
-			ftpClient.completePendingCommand();
+			// Obtener archivo JOB de SEQ
+			// ftpClient.site("filetype=seq");
+			// LOGGER.info(ftpClient.getReplyString());
+			
+			// String sRemoteFileNameJob = "'TRDESA.BTCH.CARDS.HOMOPRE.JDIRECT'";
+			// InputStream isJob = ftpClient.retrieveFileStream(sRemoteFileNameJob);
+			// LOGGER.info(ftpClient.getReplyString());
+			// FileUtils.copyInputStreamToFile(isJob, new File(rootMf + "JDIRECT"));
+			// ftpClient.completePendingCommand();
 			
 			// Mandar archivo JOB - JDIRECT
 			ftpClient.site("filetype=jes");
 			LOGGER.info(ftpClient.getReplyString());
-			FileInputStream inputStream = new FileInputStream(rootMf + "JDIRECT"); 
+			// FileInputStream inputStream = new FileInputStream(rootMf + "JDIRECT");
+			String jdirect = "//TN6NGHC  JOB 'BATCH',\r\n" + 
+					"//             &SYSUID,\r\n" + 
+					"//             NOTIFY=&SYSUID,\r\n" + 
+					"//             CLASS=L,\r\n" + 
+					"//             MSGLEVEL=(1,1)\r\n" + 
+					"//*\r\n" + 
+					"//JOBLIB   DD DSN=SYS6.DB2.RUNLIB.LOAD,DISP=SHR\r\n" + 
+					"//         DD DSN=SYS6.DB2.SDSNEXIT,DISP=SHR\r\n" + 
+					"//         DD DSN=SYS6.DB2.SDSNLOAD,DISP=SHR\r\n" + 
+					"//         DD DSN=PNCQP.BTCH.LOAD,DISP=SHR\r\n" + 
+					"//*\r\n" + 
+					"//STEP0020 EXEC PGM=IKJEFT01,PARM='RCDIRECX IGA.CDIRECT.LOG'\r\n" + 
+					"//SYSEXEC  DD DISP=SHR,DSN=TN6EAM.PRIVLIB.PROCPREP\r\n" + 
+					"//SYSOUT   DD SYSOUT=*\r\n" + 
+					"//SYSTSPRT DD SYSOUT=*\r\n" + 
+					"//SYSTSIN  DD DUMMY";
+			InputStream inputStream = new ByteArrayInputStream(jdirect.getBytes());
 			ftpClient.storeFile(send.getServerAddress(), inputStream);
 			LOGGER.info(ftpClient.getReplyString());
 			// Obtenemos nombre del job generado en MF
@@ -164,7 +184,7 @@ public class MFrame implements Serializable {
 			// Validar que el JOB este en OUTPUT
 			if(!nameJob.equals("")) {
 				int continuarMax = 0;
-				while (continuarMax < 20) {
+				while (continuarMax < 100) {
 					continuarMax++;
 					//
 					ftpClientJob.site("filetype=jes");
@@ -200,7 +220,7 @@ public class MFrame implements Serializable {
 									ftpClient.completePendingCommand();
 									resp = true;
 									//
-									continuarMax = 20;
+									continuarMax = 100;
 								}
 							}
 						}
