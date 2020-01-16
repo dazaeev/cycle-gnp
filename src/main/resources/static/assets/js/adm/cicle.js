@@ -55,7 +55,7 @@ function initTable() {
 	// iniciar contenido tabla
 	$("#seccion-table-employee").empty();
 	// Llenar tabla empleados
-	sendPostAction(CICLE_CONTROLLER + 'findCicle', null, respFindAll);
+	sendPostAction(COMPANY_CONTROLLER + 'findCompany', null, respFindAll);
 }
 
 function respFindAll(data){
@@ -66,12 +66,11 @@ function respFindAll(data){
 							+ ' 	<tr>                                        '
 							+ ' 		<th>Acciones				</th>		'
 
-							+ ' 		<th>Nombre Completo			</th>		'
-							
-							+ ' 		<th>Fecha Nacimiento		</th>		'
-							+ ' 		<th>Sexo					</th>		'
-							+ ' 		<th>Estado Civil			</th>		'
-							+ ' 		<th>Nacionalidad			</th>		'
+							+ ' 		<th>Nombre Completo											</th>                          '
+							+ ' 		<th>Correo													</th>                          '
+							+ ' 		<th>Compañia												</th>                          '
+							+ ' 		<th>Dirección				                                </th>                          '
+							+ ' 		<th>Llave de encriptación									</th>                          '
 							
 							+ ' 	</tr>                                       '
 							+ ' </thead>                                        '
@@ -94,11 +93,14 @@ function respFindAll(data){
 
 			tr += '<td align="center">'+ actions +'</td>';
 			tr += '<td>'+ rowEmployee.name + ' ' + rowEmployee.lastName +'</td>';
+			tr += '<td>'+ rowEmployee.email								+'</td>';
 			
-			tr += '<td>'+ rowEmployee.birthdate						+'</td>';
-			tr += '<td>'+ rowEmployee.sex                           +'</td>';
-			tr += '<td>'+ rowEmployee.civilStatus                   +'</td>';
-			tr += '<td>'+ rowEmployee.nationality                   +'</td>';
+			tr += '<td>'+ rowEmployee.name_company						+'</td>';
+			tr += '<td>'+ rowEmployee.address_company					+'</td>';
+			tr += '<td>'+ rowEmployee.keyBase_company                   +'</td>';
+			
+			
+			
 			
 			tr += '</tr>';
 			tableEmployee += tr;

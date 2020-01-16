@@ -18,10 +18,10 @@ public class GcloudServiceImpl implements GcloudService{
 	
 	public DataSource getDataSource(String user, String cve, String url, String driverClassName) {
         DataSourceBuilder dataSourceBuilder = DataSourceBuilder.create();
-        dataSourceBuilder.driverClassName("com.mysql.cj.jdbc.Driver");
-        dataSourceBuilder.url("jdbc:mysql://35.202.74.186:3306/gnpdbx78");
-        dataSourceBuilder.username("apps_kzn");
-        dataSourceBuilder.password("dWte0*SAA4Hb");
+        dataSourceBuilder.driverClassName(driverClassName);
+        dataSourceBuilder.url(url);
+        dataSourceBuilder.username(user);
+        dataSourceBuilder.password(cve);
         return dataSourceBuilder.build();
     }
 	
